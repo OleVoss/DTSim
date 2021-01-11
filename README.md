@@ -1,0 +1,2 @@
+# DTSim
+discgolf tournament simulator
