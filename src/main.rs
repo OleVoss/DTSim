@@ -1,4 +1,7 @@
 mod app;
+mod ui;
+mod components;
+mod tabs;
 
 use std::{io::{self, Write}};
 use app::App;
