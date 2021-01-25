@@ -12,3 +12,7 @@ pub trait DrawableComponent {
         rect: Rect,
     ) -> Result<()>;
 }
+
+pub trait Component {
+    
+}
