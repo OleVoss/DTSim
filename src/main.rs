@@ -2,19 +2,16 @@ mod app;
 mod ui;
 mod components;
 mod tabs;
+mod keys;
 
-use std::{io::{self, Write}};
+use std::{io::{self, Write}, time::{Duration, Instant}};
 use app::App;
-use anyhow::Result;
-use crossterm::{
-    ExecutableCommand,
-    execute,
-    event::{
-        read, Event, KeyCode, KeyEvent, KeyModifiers
-    },
-    terminal::{
+use anyhow::{Result, bail};
+use crossbeam_channel::{Receiver, Select, tick};
+use crossterm::{ExecutableCommand, event::{Event, KeyCode, KeyEvent, KeyModifiers, poll, read}, terminal::{
         EnterAlternateScreen, LeaveAlternateScreen,
         disable_raw_mode, enable_raw_mode}};
+
 use simplelog::{Config, LevelFilter, TermLogger};
 use tui::{
     Terminal,
@@ -27,19 +24,29 @@ fn main() -> Result<()> {
 
     setup_terminal()?;
     let mut terminal = start_terminal(io::stdout())?;
-    let mut app = App::new("DTSim");
+    let mut app = App::new();    
+
+    let mut first_update = true;
+
     loop {
-        match read().unwrap() {
-            Event::Key(KeyEvent {
-                code: KeyCode::Char('c'),
-                modifiers: KeyModifiers::CONTROL,
-            }) => {
-                shutdown_terminal()?;
-                break;
-            },
-            _ => (),
+    
+        if poll(Duration::from_millis(500))? {
+            match read()? {
+                Event::Key(ev) => {
+                    app.key_event(ev)?;
+                }
+                Event::Mouse(ev) => {}
+                Event::Resize(width, height) => {}
+            }
         }
-        draw(&mut terminal, &mut app)?;
+
+        draw(&mut terminal, &app)?;
+
+        if app.should_quit {
+            shutdown_terminal();
+            break;
+        }
+    
     }
 
     Ok(())
