@@ -1,8 +1,8 @@
 mod app;
 mod ui;
-mod components;
-mod tabs;
 mod keys;
+mod controller;
+mod models;
 
 use std::{io::{self, Write}, time::{Duration, Instant}};
 use app::App;
@@ -17,14 +17,16 @@ use tui::{
     Terminal,
     backend::{Backend, CrosstermBackend},
 };
+use ui::UI;
 
 fn main() -> Result<()> {
 
     setup_logging()?;
-
     setup_terminal()?;
+    
     let mut terminal = start_terminal(io::stdout())?;
-    let mut app = App::new();    
+    let mut app = App::new();
+    let mut ui = UI::new();       
 
     let mut first_update = true;
 
@@ -33,17 +35,17 @@ fn main() -> Result<()> {
         if poll(Duration::from_millis(500))? {
             match read()? {
                 Event::Key(ev) => {
-                    app.key_event(ev)?;
+                    controller::key_event(&mut app, ev, &mut ui)?;
                 }
                 Event::Mouse(ev) => {}
                 Event::Resize(width, height) => {}
             }
         }
 
-        draw(&mut terminal, &app)?;
+        draw(&mut terminal, &app, &ui)?;
 
         if app.should_quit {
-            shutdown_terminal();
+            shutdown_terminal()?;
             break;
         }
     
@@ -55,9 +57,10 @@ fn main() -> Result<()> {
 fn draw<B: Backend>(
     terminal: &mut Terminal<B>,
     app: &App,
+    ui: &UI
 ) -> Result<()> {
     terminal.draw(|mut f| {
-        if let Err(e) = app.draw(&mut f) {
+        if let Err(e) = ui.draw(&mut f, app) {
             log::error!("failed drawing");
         }
     })?;

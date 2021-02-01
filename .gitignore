@@ -9,3 +9,4 @@ target/
 
 # IDE stuff
 .vscode
+.idea
