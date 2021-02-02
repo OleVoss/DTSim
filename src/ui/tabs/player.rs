@@ -1,16 +1,16 @@
 use crossterm::cursor::MoveDown;
 use tui::{layout::{Constraint, Direction, Layout}, style::{Color, Modifier, Style}, widgets::{Block, BorderType, Borders, Gauge, List, ListItem, ListState}};
-use crate::{app::App, ui::components::DrawableComponent};
+use crate::{app::App, ui::components::{DrawableComponent, Slider}};
 
 #[derive(Clone, Copy)]
 pub struct Player {
     name: &'static str,
 }
 
-#[derive(Clone)]
 pub struct PlayerTab {
     visible: bool,
     pub selected: usize,
+    pub strength_slider: Slider,
 }
 
 impl PlayerTab {
@@ -18,6 +18,7 @@ impl PlayerTab {
         Self {
             visible: false,
             selected: 0,
+            strength_slider: Slider::new("Strength", 0.0, 100.0),
         }
     }
 }
@@ -123,7 +124,7 @@ impl DrawableComponent for PlayerTab {
         // render section
 
         f.render_stateful_widget(player_list, main_chunks[0], &mut list_state);
-        f.render_widget(stats_gauge.clone(), stats_chunks[0]);
+        self.strength_slider.draw(f, stats_chunks[0], app)?;
         f.render_widget(stats_gauge.clone(), stats_chunks[1]);
         f.render_widget(stats_gauge.clone(), stats_chunks[2]);
         f.render_widget(stats_gauge, stats_chunks[3]);

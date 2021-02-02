@@ -1,3 +1,7 @@
+mod slider;
+
+pub use slider::Slider;
+
 use tui::{Frame, backend::Backend, layout::Rect};
 use anyhow::Result;
 

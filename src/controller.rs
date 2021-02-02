@@ -30,6 +30,7 @@ pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
 }
 
 fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
+
     
     if ev == KeyEvent::new(KeyCode::Up, KeyModifiers::empty()) {
         let new_index = (ui.player_tab.selected + app.player_roaster.player_list.len() - 1) % app.player_roaster.player_list.len();

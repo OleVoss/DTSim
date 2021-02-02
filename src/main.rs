@@ -41,7 +41,7 @@ fn main() -> Result<()> {
                 Event::Resize(width, height) => {}
             }
         }
-
+        ui.player_tab.strength_slider.set_value(40)?;
         draw(&mut terminal, &app, &ui)?;
 
         if app.should_quit {
