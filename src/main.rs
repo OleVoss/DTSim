@@ -4,7 +4,7 @@ mod keys;
 mod controller;
 mod models;
 
-use std::{io::{self, Write}, time::{Duration, Instant}};
+use std::{io::{self, Write}, time::{Duration}};
 use app::App;
 use anyhow::{Result, bail};
 use crossbeam_channel::{Receiver, Select, tick};
@@ -28,8 +28,6 @@ fn main() -> Result<()> {
     let mut app = App::new();
     let mut ui = UI::new();       
 
-    let mut first_update = true;
-
     loop {
     
         if poll(Duration::from_millis(500))? {
@@ -41,9 +39,8 @@ fn main() -> Result<()> {
                 Event::Resize(width, height) => {}
             }
         }
-
+        ui.player_tab.strength_slider.set_value(40.0)?;
         draw(&mut terminal, &app, &ui)?;
-
         if app.should_quit {
             shutdown_terminal()?;
             break;
