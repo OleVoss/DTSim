@@ -39,7 +39,11 @@ fn main() -> Result<()> {
                 Event::Resize(width, height) => {}
             }
         }
+<<<<<<< HEAD
         ui.player_tab.strength_slider.set_value(40.0)?;
+=======
+        ui.player_tab.strength_slider.set_value(40)?;
+>>>>>>> dfcdc2b420d86f3f54ab006f8fe891f0cf040153
         draw(&mut terminal, &app, &ui)?;
         if app.should_quit {
             shutdown_terminal()?;
