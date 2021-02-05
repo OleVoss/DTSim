@@ -5,13 +5,13 @@ use serde::__private::de;
 use tui::{Frame, backend::Backend, layout::{Constraint, Direction, Layout, Margin, Rect}, style::{Color, Modifier, Style}, text::{Span, Spans}, widgets::{Block, BorderType, Borders, List, ListItem, Tabs}};
 use anyhow::{Result, bail};
 
-use crate::{keys::KeyConfig, models::PlayerRoaster};
+use crate::{keys::{KeyConfig, SharedKeyConfig}, models::PlayerRoaster};
 
 
 pub struct App {
     pub should_quit: bool,
     pub tab: usize,
-    pub key_config: Rc<KeyConfig>,
+    pub key_config: SharedKeyConfig,
     pub player_roaster: PlayerRoaster,
 }
 
