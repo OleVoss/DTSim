@@ -1,6 +1,7 @@
 use anyhow::Result;
 use tui::{
-    layout::{Constraint, Layout},
+    buffer::Buffer,
+    layout::{Constraint, Layout, Rect},
     style::{Color, Style},
     symbols,
     text::{Span, Spans},
@@ -31,12 +32,11 @@ impl<'a> Default for Slider<'a> {
 }
 
 impl<'a> Slider<'a> {
-
     pub fn block(mut self, block: Block<'a>) -> Self {
         self.block = Some(block);
         self
     }
-    
+
     pub fn label<T>(mut self, label: T) -> Self
     where
         T: Into<Span<'a>>,
@@ -49,44 +49,26 @@ impl<'a> Slider<'a> {
         self.style = style;
         self
     }
-    pub fn get_percentage(&self) -> u16 {
-        let percentage = (self.value / self.max * 100.0) as u16;
-        return percentage;
-    }
-
-    pub fn set_value(&mut self, value: f64) -> Result<()> {
-        if value <= self.min {
-            self.value = 0.0;
-        } else if value > self.max {
-            self.value = self.max;
-        } else {
-            self.value = value;
-        }
-
-        Ok(())
-    }
 }
 
-impl Widget for Slider {
-    fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer) {
+impl<'a> Widget for Slider<'a> {
+    fn render(mut self, area: Rect, buf: &mut Buffer) {
         let slider_area = match self.block.take() {
+            Some(b) => {
+                let inner_area = b.inner(area);
+                b.render(area, buf);
+                inner_area
+            }
+            None => area,
+        };
 
-        }
-        for x in area.left()..area.right() {
-            buf.get_mut(x, 2).set_symbol(symbols::block::FULL);
+        buf.set_style(slider_area, self.style);
+
+        for x in slider_area.left()..slider_area.right() {
+            buf.get_mut(x, 4).set_symbol(symbols::block::THREE_QUARTERS);
         }
     }
 }
 
 #[cfg(test)]
-mod tests {
-    use super::Slider;
-
-    #[test]
-    fn get_percentage() {
-        let mut test_slider = Slider::new("test", 0.0, 100.0);
-        test_slider.value = 50.0;
-        let percentage = test_slider.get_percentage();
-        assert_eq!(percentage, 50);
-    }
-}
+mod tests {}

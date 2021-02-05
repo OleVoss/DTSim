@@ -1,3 +1,5 @@
+use std::convert::TryInto;
+
 use crate::{
     app::App,
     ui::components::{DrawableComponent, Slider},
@@ -17,7 +19,6 @@ pub struct Player {
 pub struct PlayerTab {
     visible: bool,
     pub selected: usize,
-    pub strength_slider: Slider,
 }
 
 impl PlayerTab {
@@ -25,7 +26,6 @@ impl PlayerTab {
         Self {
             visible: false,
             selected: 0,
-            strength_slider: Slider::new("Strength", 0.0, 100.0),
         }
     }
 }
@@ -74,6 +74,10 @@ impl DrawableComponent for PlayerTab {
         list_state.select(Some(self.selected));
 
         // stats section
+
+        let slider = Slider::default()
+            .label("Test Slider")
+            .block(Block::default().borders(Borders::ALL));
 
         let stats_chunks = Layout::default()
             .direction(Direction::Vertical)
@@ -126,8 +130,7 @@ impl DrawableComponent for PlayerTab {
         // render section
 
         f.render_stateful_widget(player_list, main_chunks[0], &mut list_state);
-        // self.strength_slider.draw(f, stats_chunks[0], app)?;
-        f.render_widget(Slider::new("test", 0.0, 100.0), stats_chunks[0]);
+        f.render_widget(slider, stats_chunks[0]);
         f.render_widget(stats_gauge.clone(), stats_chunks[1]);
         f.render_widget(stats_gauge.clone(), stats_chunks[2]);
         f.render_widget(stats_gauge, stats_chunks[3]);
