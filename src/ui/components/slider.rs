@@ -78,32 +78,6 @@ impl Widget for Slider {
     }
 }
 
-impl DrawableComponent for Slider {
-    fn draw<B: tui::backend::Backend>(
-        &self,
-        f: &mut tui::Frame<B>,
-        rect: tui::layout::Rect,
-        _app: &crate::app::App,
-    ) -> Result<()> {
-        let chunks = Layout::default()
-            .direction(tui::layout::Direction::Vertical)
-            .constraints([Constraint::Percentage(15), Constraint::Percentage(85)].as_ref())
-            // .margin(1)
-            .split(rect);
-
-        let block = Block::default()
-            .borders(Borders::ALL)
-            .border_style(Style::default().fg(Color::White))
-            .border_type(BorderType::Plain)
-            .title(self.name);
-
-        // render widgets
-        f.render_widget(block, rect);
-
-        Ok(())
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::Slider;
