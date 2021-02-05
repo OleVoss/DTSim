@@ -126,8 +126,7 @@ impl DrawableComponent for PlayerTab {
         // render section
 
         f.render_stateful_widget(player_list, main_chunks[0], &mut list_state);
-        // self.strength_slider.draw(f, stats_chunks[0], app)?;
-        f.render_widget(Slider::new("test", 0.0, 100.0), stats_chunks[0]);
+        self.strength_slider.draw(f, stats_chunks[0], app)?;
         f.render_widget(stats_gauge.clone(), stats_chunks[1]);
         f.render_widget(stats_gauge.clone(), stats_chunks[2]);
         f.render_widget(stats_gauge, stats_chunks[3]);

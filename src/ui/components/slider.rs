@@ -10,45 +10,23 @@ use tui::{
 use super::DrawableComponent;
 
 #[derive(Debug, Clone)]
-pub struct Slider<'a> {
-    block: Option<Block<'a>>,
-    label: Option<Span<'a>>,
-    style: Style,
-    from: f64,
-    to: f64,
+pub struct Slider {
+    name: &'static str,
+    min: f64,
+    max: f64,
+    value: f64,
 }
 
-impl<'a> Default for Slider<'a> {
-    fn default() -> Self {
+impl Slider {
+    pub fn new(name: &'static str, min: f64, max: f64) -> Self {
         Self {
-            block: None,
-            label: None,
-            style: Style::default(),
-            from: 0.0,
-            to: 10.0,
+            name,
+            min,
+            max,
+            value: 0.0,
         }
     }
-}
 
-impl<'a> Slider<'a> {
-
-    pub fn block(mut self, block: Block<'a>) -> Self {
-        self.block = Some(block);
-        self
-    }
-    
-    pub fn label<T>(mut self, label: T) -> Self
-    where
-        T: Into<Span<'a>>,
-    {
-        self.label = Some(label.into());
-        self
-    }
-
-    pub fn style(mut self, style: Style) -> Self {
-        self.style = style;
-        self
-    }
     pub fn get_percentage(&self) -> u16 {
         let percentage = (self.value / self.max * 100.0) as u16;
         return percentage;
@@ -64,17 +42,6 @@ impl<'a> Slider<'a> {
         }
 
         Ok(())
-    }
-}
-
-impl Widget for Slider {
-    fn render(self, area: tui::layout::Rect, buf: &mut tui::buffer::Buffer) {
-        let slider_area = match self.block.take() {
-
-        }
-        for x in area.left()..area.right() {
-            buf.get_mut(x, 2).set_symbol(symbols::block::FULL);
-        }
     }
 }
 
