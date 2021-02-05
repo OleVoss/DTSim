@@ -4,7 +4,11 @@ mod keys;
 mod models;
 mod ui;
 
+<<<<<<< HEAD
 use anyhow::{bail, Result};
+=======
+use std::{io::{self, Write}, time::{Duration}};
+>>>>>>> 6a884881ce1252789880060c2e558ee44cb36da9
 use app::App;
 use crossbeam_channel::{tick, Receiver, Select};
 use crossterm::{
@@ -33,8 +37,6 @@ fn main() -> Result<()> {
     let mut app = App::new();
     let mut ui = UI::new();
 
-    let mut first_update = true;
-
     loop {
         if poll(Duration::from_millis(500))? {
             match read()? {
@@ -45,7 +47,15 @@ fn main() -> Result<()> {
                 Event::Resize(width, height) => {}
             }
         }
+<<<<<<< HEAD
         ui.player_tab.strength_slider.set_value(40.0)?;
+=======
+<<<<<<< HEAD
+        ui.player_tab.strength_slider.set_value(40.0)?;
+=======
+        ui.player_tab.strength_slider.set_value(40)?;
+>>>>>>> dfcdc2b420d86f3f54ab006f8fe891f0cf040153
+>>>>>>> 6a884881ce1252789880060c2e558ee44cb36da9
         draw(&mut terminal, &app, &ui)?;
         if app.should_quit {
             shutdown_terminal()?;

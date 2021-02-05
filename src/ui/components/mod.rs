@@ -2,16 +2,11 @@ mod slider;
 
 pub use slider::Slider;
 
-use tui::{Frame, backend::Backend, layout::Rect};
 use anyhow::Result;
+use tui::{backend::Backend, layout::Rect, Frame};
 
 use crate::app::App;
 
 pub trait DrawableComponent {
-    fn draw<B: Backend>(
-        &self,
-        f: &mut Frame<B>,
-        rect: Rect,
-        app: &App
-    ) -> Result<()>;
+    fn draw<B: Backend>(&self, f: &mut Frame<B>, rect: Rect, app: &App) -> Result<()>;
 }

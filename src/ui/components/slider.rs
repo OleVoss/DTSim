@@ -1,14 +1,19 @@
 use anyhow::Result;
-use tui::{layout::{Constraint, Layout}, style::{Color, Style}, text::{Span, Spans}, widgets::{Axis, Block, BorderType, Borders, Gauge, Widget}};
+use tui::{
+    layout::{Constraint, Layout},
+    style::{Color, Style},
+    symbols,
+    text::{Span, Spans},
+    widgets::{Axis, Block, BorderType, Borders, Chart, Dataset, Gauge, Table, Widget},
+};
 
 use super::DrawableComponent;
-
 
 pub struct Slider {
     name: &'static str,
     min: f64,
-    max: f64,
-    pub value: f64
+    max: f64, // should not be zero for various reasons
+    pub value: f64,
 }
 
 impl Slider {
@@ -22,12 +27,7 @@ impl Slider {
     }
 
     pub fn get_percentage(&self) -> u16 {
-        let percentage = match self.value {
-            0.0 => 0,
-            _ => {
-                (self.value / self.max * 100.0) as u16
-            }
-        };
+        let percentage = (self.value / self.max * 100.0) as u16;
         return percentage;
     }
 
@@ -49,17 +49,12 @@ impl DrawableComponent for Slider {
         &self,
         f: &mut tui::Frame<B>,
         rect: tui::layout::Rect,
-        app: &crate::app::App
+        _app: &crate::app::App,
     ) -> Result<()> {
         let chunks = Layout::default()
             .direction(tui::layout::Direction::Vertical)
-            .constraints(
-                [
-                    Constraint::Percentage(10),
-                    Constraint::Percentage(90),
-                ]
-                .as_ref()
-            )
+            .constraints([Constraint::Percentage(15), Constraint::Percentage(85)].as_ref())
+            // .margin(1)
             .split(rect);
 
         let block = Block::default()
@@ -68,19 +63,9 @@ impl DrawableComponent for Slider {
             .border_type(BorderType::Plain)
             .title(self.name);
 
-        let gauge = Gauge::default()
-            .block(block.clone())
-            .gauge_style(Style::default().fg(Color::Red))
-            .percent(self.get_percentage());
-
-        let axis = Axis::default()
-            .bounds([self.min, self.max]);
-
         // render widgets
         f.render_widget(block, rect);
 
-        f.render_widget(gauge, chunks[1]);
-        
         Ok(())
     }
 }
