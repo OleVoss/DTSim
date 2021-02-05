@@ -1,37 +1,41 @@
 mod app;
-mod ui;
-mod keys;
 mod controller;
+mod keys;
 mod models;
+mod ui;
 
-use std::{io::{self, Write}, time::{Duration, Instant}};
+use anyhow::{bail, Result};
 use app::App;
-use anyhow::{Result, bail};
-use crossbeam_channel::{Receiver, Select, tick};
-use crossterm::{ExecutableCommand, event::{Event, KeyCode, KeyEvent, KeyModifiers, poll, read}, terminal::{
-        EnterAlternateScreen, LeaveAlternateScreen,
-        disable_raw_mode, enable_raw_mode}};
+use crossbeam_channel::{tick, Receiver, Select};
+use crossterm::{
+    event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers},
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    ExecutableCommand,
+};
+use std::{
+    borrow::Borrow,
+    io::{self, Write},
+    time::{Duration, Instant},
+};
 
 use simplelog::{Config, LevelFilter, TermLogger};
 use tui::{
-    Terminal,
     backend::{Backend, CrosstermBackend},
+    Terminal,
 };
 use ui::UI;
 
 fn main() -> Result<()> {
-
     setup_logging()?;
     setup_terminal()?;
-    
+
     let mut terminal = start_terminal(io::stdout())?;
     let mut app = App::new();
-    let mut ui = UI::new();       
+    let mut ui = UI::new();
 
     let mut first_update = true;
 
     loop {
-    
         if poll(Duration::from_millis(500))? {
             match read()? {
                 Event::Key(ev) => {
@@ -41,24 +45,18 @@ fn main() -> Result<()> {
                 Event::Resize(width, height) => {}
             }
         }
-        ui.player_tab.strength_slider.set_value(40)?;
+        ui.player_tab.strength_slider.set_value(40.0)?;
         draw(&mut terminal, &app, &ui)?;
-
         if app.should_quit {
             shutdown_terminal()?;
             break;
         }
-    
     }
 
     Ok(())
 }
 
-fn draw<B: Backend>(
-    terminal: &mut Terminal<B>,
-    app: &App,
-    ui: &UI
-) -> Result<()> {
+fn draw<B: Backend>(terminal: &mut Terminal<B>, app: &App, ui: &UI) -> Result<()> {
     terminal.draw(|mut f| {
         if let Err(e) = ui.draw(&mut f, app) {
             log::error!("failed drawing");
@@ -74,9 +72,7 @@ fn setup_terminal() -> Result<()> {
     Ok(())
 }
 
-fn start_terminal<W: Write>(
-    buf: W
-) -> io::Result<Terminal<CrosstermBackend<W>>> {
+fn start_terminal<W: Write>(buf: W) -> io::Result<Terminal<CrosstermBackend<W>>> {
     let backend = CrosstermBackend::new(buf);
     let mut terminal = Terminal::new(backend)?;
     terminal.hide_cursor()?;
