@@ -19,6 +19,7 @@ pub struct Player {
 pub struct PlayerTab {
     visible: bool,
     pub selected: usize,
+    pub slider_test_value: f64,
 }
 
 impl PlayerTab {
@@ -26,6 +27,7 @@ impl PlayerTab {
         Self {
             visible: false,
             selected: 0,
+            slider_test_value: 0.0,
         }
     }
 }
@@ -75,38 +77,24 @@ impl DrawableComponent for PlayerTab {
 
         // stats section
 
-        let slider = Slider::default()
-            .label("Test Slider")
-            .block(Block::default().borders(Borders::ALL));
-
         let stats_chunks = Layout::default()
             .direction(Direction::Vertical)
             .constraints(
                 [
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
+                    Constraint::Length(Slider::HIGHT),
+                    Constraint::Length(Slider::HIGHT),
+                    Constraint::Length(Slider::HIGHT),
+                    Constraint::Length(Slider::HIGHT),
                 ]
                 .as_ref(),
             )
             .split(main_chunks[1]);
 
-        let stats_block = Block::default()
-            .title("Stats")
-            .borders(Borders::ALL)
-            .border_style(Style::default().fg(Color::White))
-            .border_type(BorderType::Plain);
-
-        let player_strength: i32 = match app.player_roaster.streng_by_index(self.selected) {
-            Some(strength) => strength,
-            None => 0,
-        };
-
-        let stats_gauge = Gauge::default()
-            .block(stats_block)
-            .gauge_style(Style::default().fg(Color::Red))
-            .percent(player_strength as u16);
+        let strength_slider = Slider::default()
+            .label("Test Slider")
+            .ignore_bounds(false)
+            .value(self.slider_test_value)
+            .block(Block::default().borders(Borders::ALL).title("Strength"));
 
         // bag section
 
@@ -130,10 +118,7 @@ impl DrawableComponent for PlayerTab {
         // render section
 
         f.render_stateful_widget(player_list, main_chunks[0], &mut list_state);
-        f.render_widget(slider, stats_chunks[0]);
-        f.render_widget(stats_gauge.clone(), stats_chunks[1]);
-        f.render_widget(stats_gauge.clone(), stats_chunks[2]);
-        f.render_widget(stats_gauge, stats_chunks[3]);
+        f.render_widget(strength_slider, stats_chunks[0]);
         f.render_widget(bag_block, bag_chunks[1]);
         f.render_widget(path_block, bag_chunks[0]);
 
