@@ -10,3 +10,4 @@ target/
 # IDE stuff
 .vscode
 .idea
+Cargo.lock
