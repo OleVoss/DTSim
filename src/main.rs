@@ -1,4 +1,5 @@
 mod app;
+mod config;
 mod controller;
 mod keys;
 mod models;
@@ -30,7 +31,7 @@ fn main() -> Result<()> {
     setup_terminal()?;
 
     let mut terminal = start_terminal(io::stdout())?;
-    let mut app = App::new();
+    let mut app = App::new(false);
     let mut ui = UI::new();
 
     loop {

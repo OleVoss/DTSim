@@ -1,51 +1,30 @@
 use anyhow::Result;
 
+use super::stats::Stat;
 
-
-#[derive(Debug, Clone)]
-pub struct PlayerRoaster {
-    pub player_list: Vec<Player>,
+#[derive(Debug)]
+pub struct PlayerRoaster<'r> {
+    pub player_list: Vec<Player<'r>>,
 }
 
-impl PlayerRoaster {
+impl<'r> PlayerRoaster<'r> {
     pub fn new() -> Self {
         Self {
-            player_list: vec![
-                Player {
-                    name: "Paul McBeth",
-                    strength: 70,
-                },
-                Player {
-                    name: "Richard Wysocki",
-                    strength: 43,
-                },
-                Player {
-                    name: "Calvin Heimburg",
-                    strength: 65,
-                },
-                Player {
-                    name: "Eagle Wynne McMahon",
-                    strength: 89,
-                },
-                Player {
-                    name: "Chris Dickerson",
-                    strength: 37,
-                }
-            ],
+            player_list: Vec::new(),
         }
     }
 
-    pub fn streng_by_index(&self, index: usize) -> Option<i32> {
-        match self.player_list.get(index) {
-            Some(player) => Some(player.strength),
-            None => None
-        }
+    pub fn by_index(&self, index: usize) -> Option<&Player> {
+        self.player_list.get(index)
+    }
+
+    pub fn player_count(&self) -> usize {
+        self.player_list.len()
     }
 }
 
-#[derive(Debug, Clone, Copy)]
-pub struct Player {
+#[derive(Debug, Clone)]
+pub struct Player<'p> {
     pub name: &'static str,
-    pub strength: i32,
+    pub stats: Option<Vec<Stat<'p>>>,
 }
-

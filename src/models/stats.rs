@@ -1,11 +1,20 @@
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StatType {
-    Strength { from: i32, to: i32 },
-    Precision { from: i32, to: i32 },
-    Endurance { from: i32, to: i32 },
-    Luck { from: i32, to: i32 },
+    Strength,
+    Precision,
+    Endurance,
+    Luck,
 }
 
-pub struct Stat {
-    stat_type: &StatType,
+#[derive(Debug, Clone, Copy)]
+pub struct Stat<'s> {
+    stat_type: &'s StatType,
     value: i32,
+}
+
+#[derive(Debug)]
+pub struct StatBounds {
+    pub from: i64,
+    pub to: i64,
+    pub stat_type: StatType,
 }

@@ -11,11 +11,6 @@ use tui::{
     widgets::{Block, BorderType, Borders, Gauge, List, ListItem, ListState},
 };
 
-#[derive(Clone, Copy)]
-pub struct Player {
-    name: &'static str,
-}
-
 pub struct PlayerTab {
     visible: bool,
     pub selected: usize,
@@ -60,12 +55,15 @@ impl DrawableComponent for PlayerTab {
             .border_style(Style::default().fg(Color::White))
             .border_type(BorderType::Plain);
 
-        let items: Vec<ListItem> = app
-            .player_roaster
-            .player_list
-            .iter()
-            .map(|p| ListItem::new(p.name))
-            .collect();
+        let items: Vec<ListItem> = if app.player_roaster.player_count() > 0 {
+            app.player_roaster
+                .player_list
+                .iter()
+                .map(|p| ListItem::new(p.name))
+                .collect()
+        } else {
+            vec![ListItem::new("no players existing")]
+        };
 
         let player_list = List::new(items)
             .block(player_block)
