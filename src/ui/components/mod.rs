@@ -1,6 +1,9 @@
 mod slider;
+mod slider_list;
 
 pub use slider::Slider;
+pub use slider_list::SliderList;
+pub use slider_list::SliderListState;
 
 use anyhow::Result;
 use tui::{backend::Backend, layout::Rect, Frame};

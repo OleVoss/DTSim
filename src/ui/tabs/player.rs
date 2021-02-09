@@ -2,9 +2,9 @@ use std::convert::TryInto;
 
 use crate::{
     app::App,
-    ui::components::{DrawableComponent, Slider},
+    ui::components::{DrawableComponent, Slider, SliderList, SliderListState},
 };
-use crossterm::cursor::MoveDown;
+use crossterm::{cursor::MoveDown, tty::IsTty};
 use tui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
@@ -59,7 +59,7 @@ impl DrawableComponent for PlayerTab {
             app.player_roaster
                 .player_list
                 .iter()
-                .map(|p| ListItem::new(p.name))
+                .map(|p| ListItem::new(p.name.to_string()))
                 .collect()
         } else {
             vec![ListItem::new("no players existing")]
@@ -75,24 +75,34 @@ impl DrawableComponent for PlayerTab {
 
         // stats section
 
-        let stats_chunks = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints(
-                [
-                    Constraint::Length(Slider::HIGHT),
-                    Constraint::Length(Slider::HIGHT),
-                    Constraint::Length(Slider::HIGHT),
-                    Constraint::Length(Slider::HIGHT),
-                ]
-                .as_ref(),
-            )
-            .split(main_chunks[1]);
-
         let strength_slider = Slider::default()
             .label("Test Slider")
             .ignore_bounds(false)
             .value(self.slider_test_value)
             .block(Block::default().borders(Borders::ALL).title("Strength"));
+
+        let precision_slider = Slider::default()
+            .ignore_bounds(false)
+            .value(self.slider_test_value)
+            .block(Block::default().borders(Borders::ALL).title("Precision"));
+
+        let endurance_slider = Slider::default()
+            .ignore_bounds(false)
+            .value(self.slider_test_value)
+            .block(Block::default().borders(Borders::ALL).title("Endurance"));
+
+        let luck_slider = Slider::default()
+            .ignore_bounds(false)
+            .value(self.slider_test_value)
+            .block(Block::default().borders(Borders::ALL).title("Luck"));
+
+        let slider_list = SliderList::new(vec![
+            strength_slider,
+            precision_slider,
+            endurance_slider,
+            luck_slider,
+        ])
+        .block(Block::default().borders(Borders::ALL));
 
         // bag section
 
@@ -116,7 +126,7 @@ impl DrawableComponent for PlayerTab {
         // render section
 
         f.render_stateful_widget(player_list, main_chunks[0], &mut list_state);
-        f.render_widget(strength_slider, stats_chunks[0]);
+        f.render_stateful_widget(slider_list, main_chunks[1], &mut SliderListState::default());
         f.render_widget(bag_block, bag_chunks[1]);
         f.render_widget(path_block, bag_chunks[0]);
 
