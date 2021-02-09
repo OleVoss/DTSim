@@ -1,7 +1,8 @@
-use std::rc::Rc;
+use std::{fs, path::Path, rc::Rc};
 
 use anyhow::{bail, Result};
 use crossterm::event::{Event, KeyCode, KeyEvent, KeyModifiers};
+use de::size_hint::from_bounds;
 use serde::__private::de;
 use tui::{
     backend::Backend,
@@ -19,17 +20,17 @@ use crate::{
     models::{Player, PlayerRoaster, Stat, StatType},
 };
 
-pub struct App<'a> {
+pub struct App {
     pub should_quit: bool,
     pub tab: usize,
     pub config: SharedConfig,
     pub key_config: SharedKeyConfig,
-    pub player_roaster: PlayerRoaster<'a>,
+    pub player_roaster: PlayerRoaster,
 }
 
-impl<'a> App<'a> {
-    pub fn new(initialize: bool) -> App<'a> {
-        let app = App {
+impl App {
+    pub fn new(initialize: bool) -> App {
+        let mut app = App {
             should_quit: false,
             tab: 3,
             config: Rc::new(Config::init()),
@@ -37,7 +38,7 @@ impl<'a> App<'a> {
             player_roaster: PlayerRoaster::new(),
         };
         if initialize {
-            todo!();
+            app.load_player();
         }
         return app;
     }
@@ -83,11 +84,16 @@ impl<'a> App<'a> {
 }
 
 // private impls
-impl<'a> App<'a> {
+impl App {
     fn set_tab(&mut self, tab: usize) -> Result<()> {
         self.tab = tab;
         Ok(())
     }
-
-    // TODO: Outsource to .ron files or such...
+    // TODO: Error handling
+    pub fn load_player(&mut self) {
+        let assets_path = Path::new("./assets");
+        let contents = fs::read_to_string(assets_path.join("player.ron"));
+        let roaster: PlayerRoaster = ron::from_str(&contents.unwrap().to_owned()).unwrap();
+        self.player_roaster = roaster;
+    }
 }

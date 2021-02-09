@@ -31,7 +31,7 @@ fn main() -> Result<()> {
     setup_terminal()?;
 
     let mut terminal = start_terminal(io::stdout())?;
-    let mut app = App::new(false);
+    let mut app = App::new(true);
     let mut ui = UI::new();
 
     loop {

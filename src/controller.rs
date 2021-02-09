@@ -18,6 +18,10 @@ pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         app.switch_tab(ev)?;
     }
 
+    if ev == app.key_config.select {
+        app.load_player();
+    }
+
     match app.tab {
         0 => (),
         1 => (),
