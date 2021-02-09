@@ -1,0 +1,40 @@
+PlayerRoaster(
+    player_list: [
+        Player(
+            name: "Paul McBeth",
+            stats: Some([
+                Stat(
+                    stat_type: Strength,
+                    value: 87,
+                ),
+            ])
+        ),
+        Player(
+            name: "Paul McBeth",
+            stats: Some([
+                Stat(
+                    stat_type: Strength,
+                    value: 87,
+                ),
+            ])
+        ),
+        Player(
+            name: "Paul McBeth",
+            stats: Some([
+                Stat(
+                    stat_type: Strength,
+                    value: 87,
+                ),
+            ])
+        ),
+        Player(
+            name: "Paul McBeth",
+            stats: Some([
+                Stat(
+                    stat_type: Strength,
+                    value: 87,
+                ),
+            ])
+        ),
+    ]
+)

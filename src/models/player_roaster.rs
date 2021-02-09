@@ -1,13 +1,13 @@
-use anyhow::Result;
-
 use super::stats::Stat;
+use anyhow::Result;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
-pub struct PlayerRoaster<'r> {
-    pub player_list: Vec<Player<'r>>,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PlayerRoaster {
+    pub player_list: Vec<Player>,
 }
 
-impl<'r> PlayerRoaster<'r> {
+impl<'r> PlayerRoaster {
     pub fn new() -> Self {
         Self {
             player_list: Vec::new(),
@@ -23,8 +23,8 @@ impl<'r> PlayerRoaster<'r> {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Player<'p> {
-    pub name: &'static str,
-    pub stats: Option<Vec<Stat<'p>>>,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Player {
+    pub name: String,
+    pub stats: Option<Vec<Stat>>,
 }

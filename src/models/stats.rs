@@ -1,4 +1,5 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+use serde::{Deserialize, Serialize};
+#[derive(Deserialize, Serialize, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StatType {
     Strength,
     Precision,
@@ -6,10 +7,10 @@ pub enum StatType {
     Luck,
 }
 
-#[derive(Debug, Clone, Copy)]
-pub struct Stat<'s> {
-    stat_type: &'s StatType,
-    value: i32,
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub struct Stat {
+    pub stat_type: StatType,
+    pub value: i32,
 }
 
 #[derive(Debug)]
