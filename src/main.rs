@@ -3,6 +3,7 @@ mod config;
 mod controller;
 mod keys;
 mod models;
+mod style;
 mod ui;
 
 use anyhow::{bail, Result};

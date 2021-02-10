@@ -1,19 +1,17 @@
-use tui::{Frame, layout::{Constraint, Direction, Layout, Rect}};
+use crate::{app::App, ui::widgets::DrawableComponent};
 use anyhow::Result;
-use crate::{app::App, ui::components::DrawableComponent};
-
-
+use tui::{
+    layout::{Constraint, Direction, Layout, Rect},
+    Frame,
+};
 
 pub struct Overview {
     visible: bool,
 }
 
 impl Overview {
-
     pub fn new() -> Self {
-        Self {
-            visible: false,
-        }
+        Self { visible: false }
     }
 }
 
@@ -22,17 +20,11 @@ impl DrawableComponent for Overview {
         &self,
         f: &mut Frame<B>,
         rect: Rect,
-        app: &App
+        app: &App,
     ) -> Result<()> {
         let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints(
-                [
-                    Constraint::Percentage(80),
-                    Constraint::Percentage(20),
-                ]
-                .as_ref(),
-            )
+            .constraints([Constraint::Percentage(80), Constraint::Percentage(20)].as_ref())
             .split(rect);
 
         Ok(())

@@ -1,7 +1,7 @@
 pub mod overview;
+pub mod player_tab;
 pub mod simulation;
-pub mod player;
 
 pub use overview::Overview;
+pub use player_tab::PlayerTab;
 pub use simulation::Simulation;
-pub use player::PlayerTab;

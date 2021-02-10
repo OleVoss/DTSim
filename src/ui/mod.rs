@@ -1,6 +1,6 @@
-pub mod ui;
+pub mod components;
 mod tabs;
-mod components;
+pub mod ui;
+mod widgets;
 
 pub use self::ui::UI;
-

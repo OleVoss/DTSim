@@ -1,10 +1,26 @@
-use tui::{Frame, backend::Backend, layout::{Constraint, Direction, Layout, Margin, Rect}, style::{Modifier, Style}, text::{Span, Spans}, widgets::{Block, Borders, Tabs}};
-use anyhow::{Result, bail};
-use crate::app::App;
+use std::rc::Rc;
 
-use super::{components::DrawableComponent, tabs::{Overview, PlayerTab, Simulation}};
+use crate::{
+    app::App,
+    style::{SharedTheme, Theme},
+};
+use anyhow::{bail, Result};
+use tui::{
+    backend::Backend,
+    layout::{Constraint, Direction, Layout, Margin, Rect},
+    style::{Modifier, Style},
+    text::{Span, Spans},
+    widgets::{Block, Borders, Tabs},
+    Frame,
+};
+
+use super::{
+    tabs::{Overview, PlayerTab, Simulation},
+    widgets::DrawableComponent,
+};
 
 pub struct UI {
+    theme: SharedTheme,
     overview_tab: Overview,
     simulation_tab: Simulation,
     pub player_tab: PlayerTab,
@@ -13,6 +29,7 @@ pub struct UI {
 impl UI {
     pub fn new() -> Self {
         Self {
+            theme: Rc::new(Theme::init()),
             overview_tab: Overview::new(),
             simulation_tab: Simulation::new(),
             player_tab: PlayerTab::new(),
@@ -29,7 +46,6 @@ impl UI {
                     Constraint::Length(2),
                     Constraint::Min(2),
                     Constraint::Length(5),
-
                 ]
                 .as_ref(),
             )
@@ -68,17 +84,20 @@ impl UI {
 
         f.render_widget(
             Tabs::new(tabs)
-            .block(
-                Block::default()
-                    .borders(Borders::BOTTOM)
-                    .border_style(Style::default())
-            )
-            .style(Style::default().add_modifier(Modifier::DIM))
-            .highlight_style(Style::default().add_modifier(Modifier::UNDERLINED).remove_modifier(Modifier::DIM))
-            .divider("|")
-            .select(app.tab),
+                .block(
+                    Block::default()
+                        .borders(Borders::BOTTOM)
+                        .border_style(Style::default()),
+                )
+                .style(Style::default().add_modifier(Modifier::DIM))
+                .highlight_style(
+                    Style::default()
+                        .add_modifier(Modifier::UNDERLINED)
+                        .remove_modifier(Modifier::DIM),
+                )
+                .divider("|")
+                .select(app.tab),
             r,
         );
-
     }
 }

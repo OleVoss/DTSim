@@ -1,16 +1,21 @@
-use std::convert::TryInto;
-
 use crate::{
     app::App,
-    ui::components::{DrawableComponent, Slider, SliderList, SliderListState},
+    keys::{self},
+    ui::widgets::{DrawableComponent, Slider, SliderList, SliderListState},
 };
-use crossterm::{cursor::MoveDown, tty::IsTty};
+
 use tui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    widgets::{Block, BorderType, Borders, Gauge, List, ListItem, ListState},
+    widgets::{Block, BorderType, Borders, List, ListItem, ListState},
 };
 
+#[derive(Debug, PartialEq, Eq)]
+pub enum PlayerTabSections {
+    Player,
+    Stats,
+    Bag,
+}
 pub struct PlayerTab {
     visible: bool,
     pub selected: usize,
@@ -49,8 +54,9 @@ impl DrawableComponent for PlayerTab {
         // player section
 
         // TODO: call the draw() function of the specific components
+        let title = format!("Player [{}]", keys::get_hint(app.key_config.player_list));
         let player_block = Block::default()
-            .title("Player")
+            .title(title)
             .borders(Borders::ALL)
             .border_style(Style::default().fg(Color::White))
             .border_type(BorderType::Plain);
@@ -76,25 +82,30 @@ impl DrawableComponent for PlayerTab {
         // stats section
 
         let strength_slider = Slider::default()
-            .label("Test Slider")
             .ignore_bounds(false)
             .value(self.slider_test_value)
+            .highlight_style(Style::default().fg(Color::Red))
             .block(Block::default().borders(Borders::ALL).title("Strength"));
 
         let precision_slider = Slider::default()
             .ignore_bounds(false)
             .value(self.slider_test_value)
+            .highlight_style(Style::default().fg(Color::Green))
             .block(Block::default().borders(Borders::ALL).title("Precision"));
 
         let endurance_slider = Slider::default()
             .ignore_bounds(false)
             .value(self.slider_test_value)
+            .highlight_style(Style::default().fg(Color::Blue))
             .block(Block::default().borders(Borders::ALL).title("Endurance"));
 
         let luck_slider = Slider::default()
             .ignore_bounds(false)
             .value(self.slider_test_value)
+            .highlight_style(Style::default().fg(Color::Yellow))
             .block(Block::default().borders(Borders::ALL).title("Luck"));
+
+        let title = format!("Stats [{}]", keys::get_hint(app.key_config.slider_list));
 
         let slider_list = SliderList::new(vec![
             strength_slider,
@@ -102,7 +113,7 @@ impl DrawableComponent for PlayerTab {
             endurance_slider,
             luck_slider,
         ])
-        .block(Block::default().borders(Borders::ALL));
+        .block(Block::default().title(title).borders(Borders::ALL));
 
         // bag section
 
