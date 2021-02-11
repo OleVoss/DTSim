@@ -1,4 +1,4 @@
-use super::stats::Stat;
+use super::{stats::Stat, StatType};
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
@@ -27,4 +27,25 @@ impl<'r> PlayerRoaster {
 pub struct Player {
     pub name: String,
     pub stats: Option<Vec<Stat>>,
+}
+
+impl Default for Player {
+    fn default() -> Self {
+        Self {
+            name: "Default".to_string(),
+            stats: None,
+        }
+    }
+}
+
+impl Player {
+    pub fn stat_value(&self, stat_type: StatType) -> i32 {
+        match &self.stats {
+            Some(stats) => match stats.iter().find(|s| s.stat_type == stat_type) {
+                Some(stat) => stat.value,
+                None => 0,
+            },
+            None => 0,
+        }
+    }
 }

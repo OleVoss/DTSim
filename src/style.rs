@@ -1,14 +1,21 @@
 use std::rc::Rc;
 
-use tui::style::{Color, Style};
+use tui::{
+    style::{Color, Style},
+    widgets::Block,
+};
 
 pub type SharedTheme = Rc<Theme>;
 
 pub struct Theme {
-    selected_tab: Color,
-    selected_fg: Color,
-    selected_item_fg: Color,
-    disabled_fg: Color,
+    pub selected_tab: Color,
+    pub selected_fg: Color,
+    pub selected_item_fg: Color,
+    pub disabled_fg: Color,
+    pub strength_hightlight: Color,
+    pub precision_highlight: Color,
+    pub endurance_highlight: Color,
+    pub luck_highlight: Color,
 }
 
 impl Default for Theme {
@@ -18,6 +25,10 @@ impl Default for Theme {
             selected_fg: Color::Gray,
             selected_item_fg: Color::Red,
             disabled_fg: Color::DarkGray,
+            strength_hightlight: Color::Red,
+            precision_highlight: Color::Blue,
+            endurance_highlight: Color::Green,
+            luck_highlight: Color::Yellow,
         }
     }
 }
@@ -40,5 +51,9 @@ impl Theme {
         } else {
             Style::default()
         }
+    }
+
+    pub fn slider_block(&self, focus: bool) -> Block {
+        todo!();
     }
 }

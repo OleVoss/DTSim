@@ -28,11 +28,12 @@ pub struct UI {
 
 impl UI {
     pub fn new() -> Self {
+        let theme = Rc::new(Theme::init());
         Self {
-            theme: Rc::new(Theme::init()),
+            theme: theme.clone(),
             overview_tab: Overview::new(),
             simulation_tab: Simulation::new(),
-            player_tab: PlayerTab::new(),
+            player_tab: PlayerTab::new(theme),
         }
     }
 
@@ -53,6 +54,7 @@ impl UI {
 
         self.draw_tabs(f, chunks_main[0], app);
 
+        // TODO tab selection in UI rather than in APP
         match app.tab {
             0 => self.overview_tab.draw(f, chunks_main[1], app)?,
             1 => self.simulation_tab.draw(f, chunks_main[1], app)?,

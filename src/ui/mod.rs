@@ -1,5 +1,5 @@
 pub mod components;
-mod tabs;
+pub mod tabs;
 pub mod ui;
 mod widgets;
 

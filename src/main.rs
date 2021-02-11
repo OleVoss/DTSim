@@ -17,8 +17,10 @@ use crossterm::{
 use std::{
     borrow::Borrow,
     io::{self, Write},
+    rc::Rc,
     time::{Duration, Instant},
 };
+use style::Theme;
 
 use simplelog::{Config, LevelFilter, TermLogger};
 use tui::{
