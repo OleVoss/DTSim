@@ -5,36 +5,105 @@ PlayerRoaster(
             stats: Some([
                 Stat(
                     stat_type: Strength,
-                    value: 87,
+                    value: 9,
                 ),
-            ])
+                Stat(
+                    stat_type: Precision,
+                    value: 9,
+                ),
+                Stat(
+                    stat_type: Endurance,
+                    value: 9,
+                ),
+                Stat(
+                    stat_type: Luck,
+                    value: 7,
+                ),
+            ]),
         ),
         Player(
-            name: "Paul McBeth",
+            name: "Richard Wysocki",
             stats: Some([
                 Stat(
                     stat_type: Strength,
-                    value: 87,
+                    value: 8,
                 ),
-            ])
+                Stat(
+                    stat_type: Precision,
+                    value: 8,
+                ),
+                Stat(
+                    stat_type: Endurance,
+                    value: 7,
+                ),
+                Stat(
+                    stat_type: Luck,
+                    value: 1,
+                ),
+            ]),
         ),
         Player(
-            name: "Paul McBeth",
+            name: "James Conrad",
             stats: Some([
                 Stat(
                     stat_type: Strength,
-                    value: 87,
+                    value: 3,
                 ),
-            ])
+                Stat(
+                    stat_type: Precision,
+                    value: 9,
+                ),
+                Stat(
+                    stat_type: Endurance,
+                    value: 4,
+                ),
+                Stat(
+                    stat_type: Luck,
+                    value: 9,
+                ),
+            ]),
         ),
         Player(
-            name: "Paul McBeth",
+            name: "Simon Lizotte",
             stats: Some([
                 Stat(
                     stat_type: Strength,
-                    value: 87,
+                    value: 6,
                 ),
-            ])
+                Stat(
+                    stat_type: Precision,
+                    value: 7,
+                ),
+                Stat(
+                    stat_type: Endurance,
+                    value: 8,
+                ),
+                Stat(
+                    stat_type: Luck,
+                    value: 1,
+                ),
+            ]),
+        ),
+        Player(
+            name: "Calvin Heimburg",
+            stats: Some([
+                Stat(
+                    stat_type: Strength,
+                    value: 7,
+                ),
+                Stat(
+                    stat_type: Precision,
+                    value: 8,
+                ),
+                Stat(
+                    stat_type: Endurance,
+                    value: 4,
+                ),
+                Stat(
+                    stat_type: Luck,
+                    value: 5,
+                ),
+            ]),
         ),
     ]
 )
