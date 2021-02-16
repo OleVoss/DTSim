@@ -20,7 +20,6 @@ pub struct Slider<'a> {
     to: f64,
     pub value: f64,
     ignore_bounds: bool,
-    pub active: bool,
 }
 
 impl Default for Slider<'_> {
@@ -34,7 +33,6 @@ impl Default for Slider<'_> {
             to: 10.0,
             value: 0.0,
             ignore_bounds: false,
-            active: false,
         }
     }
 }
@@ -94,10 +92,14 @@ impl<'a> Widget for Slider<'a> {
     fn render(mut self, area: Rect, buf: &mut Buffer) {
         let slider_area = match self.block.take() {
             Some(mut b) => {
-                if self.active {
-                    b = b.border_type(BorderType::Double);
-                }
                 let inner_area = b.inner(area);
+                b = match self.label {
+                    Some(l) => {
+                        b = b.title(l);
+                        b
+                    }
+                    None => {b}
+                };
                 b.render(area, buf);
                 inner_area
             }
@@ -151,7 +153,7 @@ impl<'a> Widget for Slider<'a> {
             if x < value_x {
                 buf.get_mut(x, slider_area.top() + 1)
                     .set_style(self.highlight_style);
-            } else if x > value_x && !self.active {
+            } else if x > value_x {
                 buf.get_mut(x, slider_area.top() + 1)
                     .set_style(Style::default().fg(Color::Gray));
             }

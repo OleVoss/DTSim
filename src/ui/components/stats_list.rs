@@ -49,11 +49,11 @@ impl DrawableComponent for PlayerStats {
             .ignore_bounds(false)
             .value(strength as f64)
             .highlight_style(Style::default().fg(self.theme.strength_hightlight))
+            .label("Strength")
             .block(
                 Block::default()
                     .border_style(self.theme.block(self.focus))
                     .borders(Borders::ALL)
-                    .title("Strength"),
             );
 
         let endurance = match player {
@@ -64,11 +64,11 @@ impl DrawableComponent for PlayerStats {
             .ignore_bounds(false)
             .value(endurance as f64)
             .highlight_style(Style::default().fg(self.theme.endurance_highlight))
+            .label("Endurance")
             .block(
                 Block::default()
                     .border_style(self.theme.block(self.focus))
                     .borders(Borders::ALL)
-                    .title("Endurance"),
             );
 
         let precision = match player {
@@ -79,11 +79,11 @@ impl DrawableComponent for PlayerStats {
             .ignore_bounds(false)
             .value(precision as f64)
             .highlight_style(Style::default().fg(self.theme.precision_highlight))
+            .label("Precision")
             .block(
                 Block::default()
                     .border_style(self.theme.block(self.focus))
                     .borders(Borders::ALL)
-                    .title("Precision"),
             );
 
         let luck = match player {
@@ -94,11 +94,11 @@ impl DrawableComponent for PlayerStats {
             .ignore_bounds(false)
             .value(luck as f64)
             .highlight_style(Style::default().fg(self.theme.luck_highlight))
+            .label("Luck")
             .block(
                 Block::default()
                     .border_style(self.theme.block(self.focus))
                     .borders(Borders::ALL)
-                    .title("Luck"),
             );
 
         let title = format!("Stats [{}]", keys::get_hint(app.key_config.slider_list));
@@ -114,7 +114,8 @@ impl DrawableComponent for PlayerStats {
                 .title(title)
                 .borders(Borders::ALL)
                 .border_style(self.theme.block(self.focus)),
-        );
+        )
+        .style(self.theme.block(self.focus));
 
         let mut state = SliderListState::default();
         state.select(Some(self.selection));

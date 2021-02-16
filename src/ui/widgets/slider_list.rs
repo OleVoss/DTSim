@@ -1,11 +1,6 @@
 use std::default;
 
-use tui::{
-    buffer::Buffer,
-    layout::Rect,
-    style::{Color, Style},
-    widgets::{Block, StatefulWidget, Widget},
-};
+use tui::{buffer::Buffer, layout::Rect, style::{Color, Style}, widgets::{Block, BorderType, Borders, StatefulWidget, Widget}};
 
 use super::Slider;
 
@@ -74,12 +69,9 @@ impl<'a> StatefulWidget for SliderList<'a> {
         };
 
         for (i, mut slider) in self.items.into_iter().enumerate() {
-            if i != state.selected().unwrap_or(0) {
-                slider.border_color(Color::DarkGray);
-            } else {
-                slider.active = true;
+            if i == state.selected().unwrap_or(0) {
+                slider = slider.block(Block::default().border_type(BorderType::Double).borders(Borders::ALL).border_style(self.style))    
             }
-
             let slider_area = Rect::new(list_area.x, list_area.y, list_area.width, Slider::HIGHT);
             slider.render(slider_area, buf);
             list_area.y += Slider::HIGHT;

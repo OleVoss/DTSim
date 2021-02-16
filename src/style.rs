@@ -53,6 +53,7 @@ impl Theme {
         }
     }
 
+
     pub fn slider_block(&self, focus: bool) -> Block {
         todo!();
     }
