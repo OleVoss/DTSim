@@ -29,6 +29,7 @@ pub struct SliderList<'a> {
     block: Option<Block<'a>>,
     items: Vec<Slider<'a>>,
     style: Style,
+    highlight_block: Option<Block<'a>>,
 }
 
 impl<'a> SliderList<'a> {
@@ -40,11 +41,17 @@ impl<'a> SliderList<'a> {
             block: None,
             style: Style::default(),
             items: items.into(),
+            highlight_block: None,
         }
     }
 
     pub fn block(mut self, block: Block<'a>) -> Self {
         self.block = Some(block);
+        self
+    }
+
+    pub fn highlight_block(mut self, block: Block<'a>) -> Self {
+        self.highlight_block = Some(block);
         self
     }
 
@@ -69,8 +76,8 @@ impl<'a> StatefulWidget for SliderList<'a> {
         };
 
         for (i, mut slider) in self.items.into_iter().enumerate() {
-            if i == state.selected().unwrap_or(0) {
-                slider = slider.block(Block::default().border_type(BorderType::Double).borders(Borders::ALL).border_style(self.style))    
+            if i == state.selected().unwrap_or(0) && self.highlight_block.is_some() {
+                slider = slider.block(self.highlight_block.clone().unwrap()); // ok because is_some is checked
             }
             let slider_area = Rect::new(list_area.x, list_area.y, list_area.width, Slider::HIGHT);
             slider.render(slider_area, buf);

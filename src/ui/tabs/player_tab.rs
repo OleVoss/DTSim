@@ -15,7 +15,7 @@ use tui::{
     widgets::{Block, BorderType, Borders, List, ListItem, ListState},
 };
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug,Clone, Copy, PartialEq, Eq)]
 pub enum PlayerTabSections {
     Player,
     Stats,
@@ -24,9 +24,9 @@ pub enum PlayerTabSections {
 pub struct PlayerTab {
     visible: bool,
     focus: PlayerTabSections,
-    player_list: PlayerList,
-    stats_list: PlayerStats,
-    disc_bag: DiscBag,
+    pub player_list: PlayerList,
+    pub stats_list: PlayerStats,
+    pub disc_bag: DiscBag,
 }
 
 impl PlayerTab {
@@ -40,6 +40,10 @@ impl PlayerTab {
         };
         tab.player_list.focus = true;
         return tab;
+    }
+
+    pub fn focused(&self) -> PlayerTabSections {
+        self.focus
     }
 
     pub fn select(&mut self, section: PlayerTabSections) {

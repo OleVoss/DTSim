@@ -67,6 +67,8 @@ impl<'a> Slider<'a> {
         self
     }
 
+    // TODO: fix call order; evaluations should be done in render()
+    /// Should be called before value
     pub fn value(mut self, value: f64) -> Self {
         if value >= self.to && !self.ignore_bounds {
             self.value = self.to;
@@ -78,6 +80,16 @@ impl<'a> Slider<'a> {
         self
     }
 
+    pub fn from(mut self, value: f64) -> Self {
+        self.from = value;
+        self
+    }
+
+    pub fn to(mut self, value: f64) -> Self {
+        self.to = value;
+        self
+    }
+    
     // TODO: fix call order; evaluations should be done in render()
     /// Should be called before value
     pub fn ignore_bounds(mut self, ignore: bool) -> Self {
@@ -169,6 +181,12 @@ mod tests {
     fn set_value() {
         let slider = Slider::default().value(5.0);
         assert!(slider.value == 5.0);
+    }
+
+    #[test]
+    fn set_value_bounds() {
+        let slider = Slider::default().from(0.0).to(100.0).value(50.0);
+        assert!(slider.value == 50.0);
     }
 
     #[test]

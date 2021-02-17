@@ -7,7 +7,7 @@ use crate::{keys, style::SharedTheme, ui::widgets::DrawableComponent};
 
 pub struct PlayerList {
     pub focus: bool,
-    selection: usize,
+    pub selection: usize,
     theme: SharedTheme,
 }
 
@@ -33,7 +33,7 @@ impl DrawableComponent for PlayerList {
         let block = Block::default()
             .title(title)
             .borders(Borders::ALL)
-            .border_style(self.theme.block(self.focus));
+            .border_style(self.theme.block_style(self.focus));
         let items: Vec<ListItem> = if app.player_roaster.player_count() > 0 {
             app.player_roaster
                 .player_list

@@ -39,13 +39,13 @@ impl DrawableComponent for DiscBag {
         let bag_block = Block::default()
             .title(title)
             .borders(Borders::ALL)
-            .border_style(self.theme.block(self.focus))
+            .border_style(self.theme.block_style(self.focus))
             .border_type(BorderType::Plain);
 
         let path_block = Block::default()
             .title("Path")
             .borders(Borders::ALL)
-            .border_style(self.theme.block(self.focus))
+            .border_style(self.theme.block_style(self.focus))
             .border_type(BorderType::Plain);
 
         f.render_widget(bag_block, bag_chunks[1]);
