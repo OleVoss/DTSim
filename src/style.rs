@@ -1,9 +1,8 @@
 use std::rc::Rc;
 
-use tui::{
-    style::{Color, Style},
-    widgets::Block,
-};
+use tui::{style::{Color, Style}, widgets::{Block, BorderType, Borders}};
+
+use crate::models::StatType;
 
 pub type SharedTheme = Rc<Theme>;
 
@@ -37,12 +36,26 @@ impl Theme {
     pub fn init() -> Self {
         Theme::default()
     }
-    pub fn block(&self, focus: bool) -> Style {
+    pub fn block_style(&self, focus: bool) -> Style {
         if focus {
             Style::default()
         } else {
             Style::default().fg(self.disabled_fg)
         }
+    }
+
+    pub fn slider_highlight(&self, stat_type: StatType) -> Color {
+        match stat_type {
+            StatType::Strength => self.strength_hightlight,
+            StatType::Precision => self.precision_highlight,
+            StatType::Endurance => self.endurance_highlight,
+            StatType::Luck => self.luck_highlight,
+        }
+    }
+
+    pub fn highlight_block(&self) -> Block {
+        // maybe need focus
+        Block::default().borders(Borders::ALL).border_type(BorderType::Double)
     }
 
     pub fn item(&self, selected: bool) -> Style {

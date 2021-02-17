@@ -1,3 +1,5 @@
+use std::borrow::Borrow;
+
 use tui::{
     style::Style,
     widgets::{Block, Borders},
@@ -5,14 +7,15 @@ use tui::{
 
 use crate::{
     keys,
-    models::StatType,
+    models::StatBounds,
     style::SharedTheme,
     ui::widgets::{DrawableComponent, Slider, SliderList, SliderListState},
+    config::AVAILABLE_STATS,
 };
 
 pub struct PlayerStats {
-    selection: usize,
-    player_index: usize,
+    pub selection: usize,
+    pub player_index: usize,
     pub focus: bool,
     theme: SharedTheme,
 }
@@ -35,88 +38,51 @@ impl DrawableComponent for PlayerStats {
         rect: tui::layout::Rect,
         app: &crate::app::App,
     ) -> anyhow::Result<()> {
-        // all possible sliders;
-        // TODO read from config;
-        // TODO generic slider;
+
         let player = app.player_roaster.by_index(self.player_index);
+        let mut slider_list: Vec<Slider> = Vec::<Slider>::new();
+        for stat in AVAILABLE_STATS.iter() {
 
-        let strength = match player {
-            Some(p) => p.stat_value(StatType::Strength),
-            None => 0,
+            let stat_value = match player {
+                Some(p) => p.stat_value(*stat),
+                None => 0,
+            };
+
+            let stat_bounds: StatBounds = match app.config.get_bounds(*stat) {
+                Some(b) => *b,
+                None => {
+                    let bounds = StatBounds::default();
+                    bounds               
+                },
+            };
+
+            let slider = Slider::default()
+                .ignore_bounds(false)
+                .from(stat_bounds.from as f64)
+                .to(stat_bounds.to as f64)
+                .value(stat_value.into()) // has to be used after from/to
+                .highlight_style(Style::default().fg(self.theme.slider_highlight(*stat)))
+                .label(stat.to_string())
+                .block(
+                    Block::default()
+                        .border_style(self.theme.block_style(self.focus))
+                        .borders(Borders::ALL)
+                );
+
+            slider_list.push(slider);
         };
-
-        let strength_slider = Slider::default()
-            .ignore_bounds(false)
-            .value(strength as f64)
-            .highlight_style(Style::default().fg(self.theme.strength_hightlight))
-            .label("Strength")
-            .block(
-                Block::default()
-                    .border_style(self.theme.block(self.focus))
-                    .borders(Borders::ALL)
-            );
-
-        let endurance = match player {
-            Some(p) => p.stat_value(StatType::Endurance),
-            None => 0,
-        };
-        let endurance_slider = Slider::default()
-            .ignore_bounds(false)
-            .value(endurance as f64)
-            .highlight_style(Style::default().fg(self.theme.endurance_highlight))
-            .label("Endurance")
-            .block(
-                Block::default()
-                    .border_style(self.theme.block(self.focus))
-                    .borders(Borders::ALL)
-            );
-
-        let precision = match player {
-            Some(p) => p.stat_value(StatType::Precision),
-            None => 0,
-        };
-        let precision_slider = Slider::default()
-            .ignore_bounds(false)
-            .value(precision as f64)
-            .highlight_style(Style::default().fg(self.theme.precision_highlight))
-            .label("Precision")
-            .block(
-                Block::default()
-                    .border_style(self.theme.block(self.focus))
-                    .borders(Borders::ALL)
-            );
-
-        let luck = match player {
-            Some(p) => p.stat_value(StatType::Luck),
-            None => 0,
-        };
-        let luck_slider = Slider::default()
-            .ignore_bounds(false)
-            .value(luck as f64)
-            .highlight_style(Style::default().fg(self.theme.luck_highlight))
-            .label("Luck")
-            .block(
-                Block::default()
-                    .border_style(self.theme.block(self.focus))
-                    .borders(Borders::ALL)
-            );
-
+        
         let title = format!("Stats [{}]", keys::get_hint(app.key_config.slider_list));
 
-        let slider_list = SliderList::new(vec![
-            strength_slider,
-            endurance_slider,
-            precision_slider,
-            luck_slider,
-        ])
+        let slider_list = SliderList::new(slider_list)
         .block(
             Block::default()
                 .title(title)
                 .borders(Borders::ALL)
-                .border_style(self.theme.block(self.focus)),
+                .border_style(self.theme.block_style(self.focus)),
         )
-        .style(self.theme.block(self.focus));
-
+        .highlight_block(self.theme.highlight_block())
+        .style(self.theme.block_style(self.focus));
         let mut state = SliderListState::default();
         state.select(Some(self.selection));
 
