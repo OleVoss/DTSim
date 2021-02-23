@@ -2,9 +2,8 @@ use std::{convert::TryInto, rc::Rc};
 
 use anyhow::Result;
 use serde::__private::de;
-use stats::{Stat, StatBounds};
 
-use crate::models::{stats, StatType};
+use crate::models::player::stats::{StatBounds, StatType};
 
 pub type SharedConfig = Rc<Config>;
 
@@ -71,7 +70,7 @@ impl Config {
 #[cfg(test)]
 mod tests {
     use super::Config;
-    use crate::models::stats::{StatType, StatBounds};
+    use crate::models::player::stats::{StatType, StatBounds};
     #[test]
     fn stat_increment_step() {
         let config = Config {

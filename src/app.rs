@@ -17,7 +17,7 @@ use crate::{
     config::{self, Config, SharedConfig},
     draw,
     keys::{KeyConfig, SharedKeyConfig},
-    models::{Player, PlayerRoaster, Stat, StatType},
+    models::player::{Player, PlayerRoaster, Stat, StatType},
 };
 
 pub struct App {

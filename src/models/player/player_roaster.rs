@@ -1,6 +1,6 @@
-use super::{StatType, stats::Stat};
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
+
+use super::stats::{Stat, StatType};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PlayerRoaster {

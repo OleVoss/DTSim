@@ -4,7 +4,11 @@ use anyhow::{Result, private::new_adhoc};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use enum_index::{EnumIndex, IndexEnum};
 
-use crate::{UI, app::App, config::{self, SharedConfig}, keys::{KeyConfig, SharedKeyConfig}, models::StatType, ui::tabs::PlayerTabSections};
+use crate::{
+    UI, app::App,
+    config::{self, SharedConfig},
+    keys::{KeyConfig, SharedKeyConfig},
+    models::player::stats::StatType, ui::tabs::PlayerTabSections};
 
 pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
     if ev == KeyEvent::new(KeyCode::Char('c'), KeyModifiers::CONTROL) {

@@ -2,7 +2,8 @@ use std::rc::Rc;
 
 use tui::{style::{Color, Style}, widgets::{Block, BorderType, Borders}};
 
-use crate::models::StatType;
+use crate::models::player::stats::StatType;
+
 
 pub type SharedTheme = Rc<Theme>;
 

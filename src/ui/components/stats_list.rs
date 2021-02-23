@@ -7,7 +7,7 @@ use tui::{
 
 use crate::{
     keys,
-    models::StatBounds,
+    models::player::StatBounds,
     style::SharedTheme,
     ui::widgets::{DrawableComponent, Slider, SliderList, SliderListState},
     config::AVAILABLE_STATS,
