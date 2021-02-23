@@ -8,7 +8,7 @@ use crate::{
     UI, app::App,
     config::{self, SharedConfig},
     keys::{KeyConfig, SharedKeyConfig},
-    models::player::stats::StatType, ui::tabs::PlayerTabSections};
+    models::player::stats::PlayerStatType, ui::tabs::PlayerTabSections};
 
 pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
     if ev == KeyEvent::new(KeyCode::Char('c'), KeyModifiers::CONTROL) {
@@ -65,11 +65,11 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         }
         PlayerTabSections::Stats => {
             if ev == app.key_config.move_down {
-                let stats_count = StatType::VARIANT_COUNT;
+                let stats_count = PlayerStatType::VARIANT_COUNT;
                 let new_index = (ui.player_tab.stats_list.selection + stats_count + 1) % stats_count;
                 ui.player_tab.stats_list.selection = new_index;
             } else if ev == app.key_config.move_up {
-                let stats_count = StatType::VARIANT_COUNT;
+                let stats_count = PlayerStatType::VARIANT_COUNT;
                 let new_index = (ui.player_tab.stats_list.selection + stats_count - 1) % stats_count;
                 ui.player_tab.stats_list.selection = new_index;
             } else if ev == app.key_config.move_right {
@@ -77,7 +77,7 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
                 match app.player_roaster.by_index_mut(player_index) {
                     Some(player) => {
                         // get stat type
-                        let stat_type: StatType = StatType::index_enum(ui.player_tab.stats_list.selection).unwrap_or(StatType::Strength);
+                        let stat_type: PlayerStatType = PlayerStatType::index_enum(ui.player_tab.stats_list.selection).unwrap_or(PlayerStatType::Strength);
                         // get stat value
                         let stat_value = player.stat_value(stat_type);
                         // update player stat
@@ -92,7 +92,7 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
                 match app.player_roaster.by_index_mut(player_index) {
                     Some(player) => {
                         // get stat type
-                        let stat_type: StatType = StatType::index_enum(ui.player_tab.stats_list.selection).unwrap_or(StatType::Strength);
+                        let stat_type: PlayerStatType = PlayerStatType::index_enum(ui.player_tab.stats_list.selection).unwrap_or(PlayerStatType::Strength);
                         // get stat value
                         let stat_value = player.stat_value(stat_type);
                         // update player stat

@@ -14,16 +14,14 @@ use tui::{
     Frame,
 };
 
-use super::{
-    tabs::{Overview, PlayerTab, Simulation},
-    widgets::DrawableComponent,
-};
+use super::{tabs::{DiscTab, Overview, PlayerTab, Simulation}, widgets::DrawableComponent};
 
 pub struct UI {
     theme: SharedTheme,
     overview_tab: Overview,
     simulation_tab: Simulation,
     pub player_tab: PlayerTab,
+    pub disc_tab: DiscTab,
 }
 
 impl UI {
@@ -33,7 +31,8 @@ impl UI {
             theme: theme.clone(),
             overview_tab: Overview::new(),
             simulation_tab: Simulation::new(),
-            player_tab: PlayerTab::new(theme),
+            player_tab: PlayerTab::new(theme.clone()),
+            disc_tab: DiscTab::new(theme),
         }
     }
 
@@ -59,6 +58,7 @@ impl UI {
             0 => self.overview_tab.draw(f, chunks_main[1], app)?,
             1 => self.simulation_tab.draw(f, chunks_main[1], app)?,
             3 => self.player_tab.draw(f, chunks_main[1], app)?,
+            4 => self.disc_tab.draw(f, chunks_main[1], app)?,
             _ => bail!("unknown tab"),
         };
 

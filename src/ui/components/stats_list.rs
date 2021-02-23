@@ -10,7 +10,7 @@ use crate::{
     models::player::StatBounds,
     style::SharedTheme,
     ui::widgets::{DrawableComponent, Slider, SliderList, SliderListState},
-    config::AVAILABLE_STATS,
+    config::AVAILABLE_PLAYER_STATS,
 };
 
 pub struct PlayerStats {
@@ -41,7 +41,7 @@ impl DrawableComponent for PlayerStats {
 
         let player = app.player_roaster.by_index(self.player_index);
         let mut slider_list: Vec<Slider> = Vec::<Slider>::new();
-        for stat in AVAILABLE_STATS.iter() {
+        for stat in AVAILABLE_PLAYER_STATS.iter() {
 
             let stat_value = match player {
                 Some(p) => p.stat_value(*stat),
@@ -58,9 +58,9 @@ impl DrawableComponent for PlayerStats {
 
             let slider = Slider::default()
                 .ignore_bounds(false)
-                .from(stat_bounds.from as f64)
-                .to(stat_bounds.to as f64)
-                .value(stat_value.into()) // has to be used after from/to
+                .from(stat_bounds.from() as f64)
+                .to(stat_bounds.to() as f64)
+                .value(stat_value as f64) // has to be used after from/to
                 .highlight_style(Style::default().fg(self.theme.slider_highlight(*stat)))
                 .label(stat.to_string())
                 .block(

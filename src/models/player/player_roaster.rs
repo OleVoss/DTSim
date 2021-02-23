@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::stats::{Stat, StatType};
+use super::stats::{Stat, PlayerStatType};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PlayerRoaster {
@@ -44,21 +44,21 @@ impl Default for Player {
 }
 
 impl Player {
-    pub fn stat_value(&self, stat_type: StatType) -> i32 {
+    pub fn stat_value(&self, stat_type: PlayerStatType) -> i64 {
         match &self.stats {
-            Some(stats) => match stats.iter().find(|s| s.stat_type == stat_type) {
-                Some(stat) => stat.value,
+            Some(stats) => match stats.iter().find(|s| s.stat_type() == stat_type) {
+                Some(stat) => stat.value(),
                 None => 0,
             },
             None => 0,
         }
     }
 
-    pub fn change_stat_value(&mut self, new_value: i32, stat_type: StatType) {
+    pub fn change_stat_value(&mut self, new_value: i64, stat_type: PlayerStatType) {
         match &mut self.stats {
-            Some(stats) => match stats.iter_mut().find(|s| s.stat_type == stat_type) {
+            Some(stats) => match stats.iter_mut().find(|s| s.stat_type() == stat_type) {
                 Some(stat) => {
-                    stat.value = new_value;
+                    stat.set_value(new_value);
                 }
                 None => {}
             }
@@ -77,14 +77,14 @@ mod tests {
         let mut player = Player {
             name: "test player".to_string(),
             stats: Some(vec![
-                Stat {
-                   stat_type: StatType::Strength,
-                   value: 5, 
-                }
+                Stat::new(
+                   PlayerStatType::Strength,
+                   5 
+                )
             ]),
         };
 
-        player.change_stat_value(7, StatType::Strength);
-        assert!(player.stat_value(StatType::Strength) == 7);
+        player.change_stat_value(7, PlayerStatType::Strength);
+        assert!(player.stat_value(PlayerStatType::Strength) == 7);
     }
 }

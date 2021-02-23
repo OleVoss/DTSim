@@ -13,6 +13,8 @@ pub struct KeyConfig {
     pub slider_list: KeyEvent,
     pub disc_bag: KeyEvent,
     pub tab_discs: KeyEvent,
+    pub disc_list: KeyEvent,
+    pub disc_info: KeyEvent,
     pub select: KeyEvent,
     pub move_up: KeyEvent,
     pub move_down: KeyEvent,
@@ -52,8 +54,17 @@ impl Default for KeyConfig {
                 code: KeyCode::Char('b'),
                 modifiers: KeyModifiers::empty(),
             },
+            // Disc Tab
             tab_discs: KeyEvent {
                 code: KeyCode::Char('5'),
+                modifiers: KeyModifiers::empty(),
+            },
+            disc_list: KeyEvent {
+                code: KeyCode::Char('d'),
+                modifiers: KeyModifiers::empty(),
+            },
+            disc_info: KeyEvent {
+                code: KeyCode::Char('i'),
                 modifiers: KeyModifiers::empty(),
             },
             select: KeyEvent {

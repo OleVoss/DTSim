@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use tui::{style::{Color, Style}, widgets::{Block, BorderType, Borders}};
 
-use crate::models::player::stats::StatType;
+use crate::models::player::stats::PlayerStatType;
 
 
 pub type SharedTheme = Rc<Theme>;
@@ -45,12 +45,12 @@ impl Theme {
         }
     }
 
-    pub fn slider_highlight(&self, stat_type: StatType) -> Color {
+    pub fn slider_highlight(&self, stat_type: PlayerStatType) -> Color {
         match stat_type {
-            StatType::Strength => self.strength_hightlight,
-            StatType::Precision => self.precision_highlight,
-            StatType::Endurance => self.endurance_highlight,
-            StatType::Luck => self.luck_highlight,
+            PlayerStatType::Strength => self.strength_hightlight,
+            PlayerStatType::Precision => self.precision_highlight,
+            PlayerStatType::Endurance => self.endurance_highlight,
+            PlayerStatType::Luck => self.luck_highlight,
         }
     }
 
