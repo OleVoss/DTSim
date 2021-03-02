@@ -1,14 +1,17 @@
 use std::rc::Rc;
 
-use anyhow::{Result, private::new_adhoc};
+use anyhow::{private::new_adhoc, Result};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use enum_index::{EnumIndex, IndexEnum};
 
 use crate::{
-    UI, app::App,
+    app::App,
     config::{self, SharedConfig},
     keys::{KeyConfig, SharedKeyConfig},
-    models::player::stats::PlayerStatType, ui::tabs::PlayerTabSections};
+    models::player::stats::PlayerStatType,
+    ui::tabs::{discs::DiscTabSections, PlayerTabSections},
+    UI,
+};
 
 pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
     if ev == KeyEvent::new(KeyCode::Char('c'), KeyModifiers::CONTROL) {
@@ -34,9 +37,34 @@ pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         1 => (),
         2 => (),
         3 => player_tab(app, ev, ui)?,
+        4 => disc_tab(app, ev, ui)?,
         _ => (),
     }
 
+    Ok(())
+}
+
+fn disc_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
+    if ev == app.key_config.disc_list {
+        ui.disc_tab.select(DiscTabSections::Discs);
+    } else if ev == app.key_config.disc_info {
+        ui.disc_tab.select(DiscTabSections::Info);
+    }
+
+    match ui.disc_tab.focused() {
+        DiscTabSections::Discs => {
+            if ev == app.key_config.move_down {
+                let disc_count = app.disc_storage.disc_count();
+                let new_index = (ui.disc_tab.disc_list.selection + disc_count + 1) % disc_count;
+                ui.disc_tab.disc_list.selection = new_index;
+            } else if ev == app.key_config.move_up {
+                let disc_count = app.disc_storage.disc_count();
+                let new_index = (ui.disc_tab.disc_list.selection + disc_count - 1) % disc_count;
+                ui.disc_tab.disc_list.selection = new_index;
+            }
+        }
+        DiscTabSections::Info => {}
+    }
     Ok(())
 }
 // ! this is not good
@@ -53,12 +81,14 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         PlayerTabSections::Player => {
             if ev == app.key_config.move_down {
                 let player_count = app.player_roaster.player_count();
-                let new_index = (ui.player_tab.player_list.selection + player_count + 1) % player_count;
+                let new_index =
+                    (ui.player_tab.player_list.selection + player_count + 1) % player_count;
                 ui.player_tab.player_list.selection = new_index;
                 ui.player_tab.stats_list.player_index = new_index; // ! this is bad
             } else if ev == app.key_config.move_up {
                 let player_count = app.player_roaster.player_count();
-                let new_index = (ui.player_tab.player_list.selection + player_count - 1) % player_count;
+                let new_index =
+                    (ui.player_tab.player_list.selection + player_count - 1) % player_count;
                 ui.player_tab.player_list.selection = new_index;
                 ui.player_tab.stats_list.player_index = new_index; // ! same
             }
@@ -66,18 +96,22 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         PlayerTabSections::Stats => {
             if ev == app.key_config.move_down {
                 let stats_count = PlayerStatType::VARIANT_COUNT;
-                let new_index = (ui.player_tab.stats_list.selection + stats_count + 1) % stats_count;
+                let new_index =
+                    (ui.player_tab.stats_list.selection + stats_count + 1) % stats_count;
                 ui.player_tab.stats_list.selection = new_index;
             } else if ev == app.key_config.move_up {
                 let stats_count = PlayerStatType::VARIANT_COUNT;
-                let new_index = (ui.player_tab.stats_list.selection + stats_count - 1) % stats_count;
+                let new_index =
+                    (ui.player_tab.stats_list.selection + stats_count - 1) % stats_count;
                 ui.player_tab.stats_list.selection = new_index;
             } else if ev == app.key_config.move_right {
                 let player_index = ui.player_tab.player_list.selection;
                 match app.player_roaster.by_index_mut(player_index) {
                     Some(player) => {
                         // get stat type
-                        let stat_type: PlayerStatType = PlayerStatType::index_enum(ui.player_tab.stats_list.selection).unwrap_or(PlayerStatType::Strength);
+                        let stat_type: PlayerStatType =
+                            PlayerStatType::index_enum(ui.player_tab.stats_list.selection)
+                                .unwrap_or(PlayerStatType::Strength);
                         // get stat value
                         let stat_value = player.stat_value(stat_type);
                         // update player stat
@@ -86,13 +120,14 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
                     }
                     None => {}
                 }
-                
             } else if ev == app.key_config.move_left {
                 let player_index = ui.player_tab.player_list.selection;
                 match app.player_roaster.by_index_mut(player_index) {
                     Some(player) => {
                         // get stat type
-                        let stat_type: PlayerStatType = PlayerStatType::index_enum(ui.player_tab.stats_list.selection).unwrap_or(PlayerStatType::Strength);
+                        let stat_type: PlayerStatType =
+                            PlayerStatType::index_enum(ui.player_tab.stats_list.selection)
+                                .unwrap_or(PlayerStatType::Strength);
                         // get stat value
                         let stat_value = player.stat_value(stat_type);
                         // update player stat
@@ -101,7 +136,6 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
                     }
                     None => {}
                 }
-
             }
         }
         PlayerTabSections::Bag => {}

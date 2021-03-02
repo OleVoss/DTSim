@@ -23,7 +23,7 @@ pub enum DiscTabSections {
 pub struct DiscTab {
     visible: bool,
     focus: DiscTabSections,
-    disc_list: DiscList,
+    pub disc_list: DiscList,
     disc_info: DiscInfo,
 }
 

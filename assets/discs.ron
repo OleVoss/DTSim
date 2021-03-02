@@ -1,0 +1,165 @@
+DiscStorage(
+    discs: [
+        Disc(
+            name: "Saint",
+            manufacturer: "Latitude64",
+            disc_type: Driver,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 9.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 7.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: -1.0,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 2.0,
+                ),
+            ]
+        ),
+        Disc(
+            name: "Spark",
+            manufacturer: "Latitude64",
+            disc_type: Driver,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 7.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 4.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: -0.5,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 3.0,
+                ),
+            ]
+        ),
+        Disc(
+            name: "Orbital",
+            manufacturer: "MVP Disc Sports",
+            disc_type: Driver,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 11.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 5.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: -4.5,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 1.0,
+                ),
+            ]
+        ),
+        Disc(
+            name: "Photon",
+            manufacturer: "MVP Disc Sports",
+            disc_type: Driver,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 11.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 5.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: -1.0,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 2.5,
+                ),
+            ]
+        ),
+        Disc(
+            name: "Warship",
+            manufacturer: "Westside Discs",
+            disc_type: Midrange,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 5.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 6.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: 0.0,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 1.0,
+                ),
+            ]
+        ),
+        Disc(
+            name: "Maiden",
+            manufacturer: "Westside Discs",
+            disc_type: Putter,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 3.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 4.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: 0.0,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 1.0,
+                ),
+            ]
+        ),
+        Disc(
+            name: "NOVA",
+            manufacturer: "Innova",
+            disc_type: Putter,
+            disc_stats: [
+                DiscStat(
+                    stat_type: Speed,
+                    value: 2.0,
+                ),
+                DiscStat(
+                    stat_type: Glide,
+                    value: 3.0,
+                ),
+                DiscStat(
+                    stat_type: Turn,
+                    value: 0.0,
+                ),
+                DiscStat(
+                    stat_type: Fade,
+                    value: 0.0,
+                ),
+            ]
+        ),
+    ]
+)

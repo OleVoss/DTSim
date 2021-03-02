@@ -6,11 +6,11 @@ use tui::{
 };
 
 use crate::{
+    config::AVAILABLE_PLAYER_STATS,
     keys,
     models::player::StatBounds,
     style::SharedTheme,
     ui::widgets::{DrawableComponent, Slider, SliderList, SliderListState},
-    config::AVAILABLE_PLAYER_STATS,
 };
 
 pub struct PlayerStats {
@@ -38,22 +38,20 @@ impl DrawableComponent for PlayerStats {
         rect: tui::layout::Rect,
         app: &crate::app::App,
     ) -> anyhow::Result<()> {
-
         let player = app.player_roaster.by_index(self.player_index);
         let mut slider_list: Vec<Slider> = Vec::<Slider>::new();
         for stat in AVAILABLE_PLAYER_STATS.iter() {
-
             let stat_value = match player {
                 Some(p) => p.stat_value(*stat),
                 None => 0,
             };
 
-            let stat_bounds: StatBounds = match app.config.get_bounds(*stat) {
+            let stat_bounds: StatBounds = match app.config.get_player_bounds(*stat) {
                 Some(b) => *b,
                 None => {
                     let bounds = StatBounds::default();
-                    bounds               
-                },
+                    bounds
+                }
             };
 
             let slider = Slider::default()
@@ -66,23 +64,23 @@ impl DrawableComponent for PlayerStats {
                 .block(
                     Block::default()
                         .border_style(self.theme.block_style(self.focus))
-                        .borders(Borders::ALL)
+                        .borders(Borders::ALL),
                 );
 
             slider_list.push(slider);
-        };
-        
+        }
+
         let title = format!("Stats [{}]", keys::get_hint(app.key_config.slider_list));
 
         let slider_list = SliderList::new(slider_list)
-        .block(
-            Block::default()
-                .title(title)
-                .borders(Borders::ALL)
-                .border_style(self.theme.block_style(self.focus)),
-        )
-        .highlight_block(self.theme.highlight_block())
-        .style(self.theme.block_style(self.focus));
+            .block(
+                Block::default()
+                    .title(title)
+                    .borders(Borders::ALL)
+                    .border_style(self.theme.block_style(self.focus)),
+            )
+            .highlight_block(self.theme.highlight_block())
+            .style(self.theme.block_style(self.focus));
         let mut state = SliderListState::default();
         state.select(Some(self.selection));
 

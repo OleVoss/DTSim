@@ -3,6 +3,7 @@ use std::{fs, path::Path, rc::Rc};
 use anyhow::{bail, Result};
 use crossterm::event::{Event, KeyCode, KeyEvent, KeyModifiers};
 use de::size_hint::from_bounds;
+use fs::read_to_string;
 use serde::__private::de;
 use tui::{
     backend::Backend,
@@ -17,7 +18,10 @@ use crate::{
     config::{self, Config, SharedConfig},
     draw,
     keys::{KeyConfig, SharedKeyConfig},
-    models::player::{Player, PlayerRoaster, Stat, PlayerStatType},
+    models::{
+        disc::disc_storage::{Disc, DiscStorage},
+        player::{Player, PlayerRoaster, PlayerStatType, Stat},
+    },
 };
 
 pub struct App {
@@ -26,6 +30,7 @@ pub struct App {
     pub config: SharedConfig,
     pub key_config: SharedKeyConfig,
     pub player_roaster: PlayerRoaster,
+    pub disc_storage: DiscStorage,
 }
 
 impl App {
@@ -36,10 +41,13 @@ impl App {
             config: Rc::new(Config::init()),
             key_config: Rc::new(KeyConfig::init()),
             player_roaster: PlayerRoaster::new(),
+            disc_storage: DiscStorage::new(),
         };
         if initialize {
             app.load_player();
+            app.load_discs();
         }
+
         return app;
     }
 
@@ -95,5 +103,12 @@ impl App {
         let contents = fs::read_to_string(assets_path.join("player.ron"));
         let roaster: PlayerRoaster = ron::from_str(&contents.unwrap().to_owned()).unwrap();
         self.player_roaster = roaster;
+    }
+
+    pub fn load_discs(&mut self) {
+        let asset_path = Path::new("./assets");
+        let contents = fs::read_to_string(asset_path.join("discs.ron"));
+        let storage: DiscStorage = ron::from_str(&contents.unwrap().to_owned()).unwrap();
+        self.disc_storage = storage;
     }
 }

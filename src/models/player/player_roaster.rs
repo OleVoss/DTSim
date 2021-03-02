@@ -1,13 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-use super::stats::{Stat, PlayerStatType};
+use super::stats::{PlayerStatType, Stat};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PlayerRoaster {
     pub player_list: Vec<Player>,
 }
 
-impl<'r> PlayerRoaster {
+impl PlayerRoaster {
     pub fn new() -> Self {
         Self {
             player_list: Vec::new(),
@@ -25,7 +25,6 @@ impl<'r> PlayerRoaster {
     pub fn player_count(&self) -> usize {
         self.player_list.len()
     }
-
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -61,7 +60,7 @@ impl Player {
                     stat.set_value(new_value);
                 }
                 None => {}
-            }
+            },
             None => {}
         }
     }
@@ -71,17 +70,11 @@ impl Player {
 mod tests {
     use super::*;
 
-
     #[test]
     fn change_stat_value() {
         let mut player = Player {
             name: "test player".to_string(),
-            stats: Some(vec![
-                Stat::new(
-                   PlayerStatType::Strength,
-                   5 
-                )
-            ]),
+            stats: Some(vec![Stat::new(PlayerStatType::Strength, 5)]),
         };
 
         player.change_stat_value(7, PlayerStatType::Strength);
