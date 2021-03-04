@@ -37,7 +37,7 @@ impl App {
     pub fn new(initialize: bool) -> App {
         let mut app = App {
             should_quit: false,
-            tab: 3,
+            tab: 4,
             config: Rc::new(Config::init()),
             key_config: Rc::new(KeyConfig::init()),
             player_roaster: PlayerRoaster::new(),

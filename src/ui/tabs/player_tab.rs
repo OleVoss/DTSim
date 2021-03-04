@@ -3,19 +3,19 @@ use crate::{
     keys::{self},
     style::SharedTheme,
     ui::{
-        components::{disc_bag::DiscBag, player_list::PlayerList, stats_list},
+        components::{disc_bag::DiscBag, player_list::PlayerList, player_stats_list},
         widgets::{DrawableComponent, Slider, SliderList, SliderListState},
     },
 };
 
-use stats_list::PlayerStats;
+use player_stats_list::PlayerStats;
 use tui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     widgets::{Block, BorderType, Borders, List, ListItem, ListState},
 };
 
-#[derive(Debug,Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PlayerTabSections {
     Player,
     Stats,

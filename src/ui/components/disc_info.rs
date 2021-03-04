@@ -1,7 +1,7 @@
 use std::convert::TryInto;
 
 use tui::{
-    layout::Layout,
+    layout::{Constraint, Direction, Layout, Margin},
     widgets::{Block, Borders},
 };
 
@@ -12,7 +12,7 @@ use super::{disc_stats::DiscStats, flightpath::Flightpath};
 pub struct DiscInfo {
     pub focus: bool,
     theme: SharedTheme,
-    stats: DiscStats,
+    pub stats: DiscStats,
     flightpath: Flightpath,
 }
 
@@ -36,9 +36,14 @@ impl DrawableComponent for DiscInfo {
     ) -> anyhow::Result<()> {
         let title = format!("Disc Info [{}]", keys::get_hint(app.key_config.disc_info));
         let block = Block::default().title(title).borders(Borders::ALL);
-        let chunks = Layout::default();
+        let chunks = Layout::default()
+            .direction(Direction::Horizontal)
+            .constraints([Constraint::Percentage(55), Constraint::Percentage(45)].as_ref())
+            .split(rect);
 
-        f.render_widget(block, rect);
+        // f.render_widget(block, rect);
+        self.stats.draw(f, chunks[0], app)?;
+        self.flightpath.draw(f, chunks[1], app)?;
         Ok(())
     }
 }

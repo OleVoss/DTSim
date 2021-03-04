@@ -45,11 +45,11 @@ pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
 }
 
 fn disc_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
-    if ev == app.key_config.disc_list {
-        ui.disc_tab.select(DiscTabSections::Discs);
-    } else if ev == app.key_config.disc_info {
-        ui.disc_tab.select(DiscTabSections::Info);
-    }
+    // if ev == app.key_config.disc_list {
+    //     ui.disc_tab.select(DiscTabSections::Discs);
+    // } else if ev == app.key_config.disc_info {
+    //     ui.disc_tab.select(DiscTabSections::Info);
+    // }
 
     match ui.disc_tab.focused() {
         DiscTabSections::Discs => {
@@ -57,10 +57,12 @@ fn disc_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
                 let disc_count = app.disc_storage.disc_count();
                 let new_index = (ui.disc_tab.disc_list.selection + disc_count + 1) % disc_count;
                 ui.disc_tab.disc_list.selection = new_index;
+                ui.disc_tab.disc_info.stats.disc_index = new_index;
             } else if ev == app.key_config.move_up {
                 let disc_count = app.disc_storage.disc_count();
                 let new_index = (ui.disc_tab.disc_list.selection + disc_count - 1) % disc_count;
                 ui.disc_tab.disc_list.selection = new_index;
+                ui.disc_tab.disc_info.stats.disc_index = new_index;
             }
         }
         DiscTabSections::Info => {}

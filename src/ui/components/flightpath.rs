@@ -25,6 +25,8 @@ impl DrawableComponent for Flightpath {
     ) -> anyhow::Result<()> {
         let title = "Flightpath";
         let block = Block::default().title(title).borders(Borders::ALL);
+
+        f.render_widget(block, rect);
         Ok(())
     }
 }

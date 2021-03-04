@@ -24,7 +24,7 @@ pub struct DiscTab {
     visible: bool,
     focus: DiscTabSections,
     pub disc_list: DiscList,
-    disc_info: DiscInfo,
+    pub disc_info: DiscInfo,
 }
 
 impl DiscTab {

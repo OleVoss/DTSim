@@ -17,6 +17,12 @@ pub const AVAILABLE_PLAYER_STATS: [PlayerStatType; 4] = [
     PlayerStatType::Endurance,
     PlayerStatType::Luck,
 ];
+pub const AVAILABLE_DISC_STATS: [DiscStatType; 4] = [
+    DiscStatType::Speed,
+    DiscStatType::Glide,
+    DiscStatType::Turn,
+    DiscStatType::Fade,
+];
 
 #[derive(Debug)]
 pub struct Config {

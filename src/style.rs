@@ -1,9 +1,11 @@
 use std::rc::Rc;
 
-use tui::{style::{Color, Style}, widgets::{Block, BorderType, Borders}};
+use tui::{
+    style::{Color, Style},
+    widgets::{Block, BorderType, Borders},
+};
 
-use crate::models::player::stats::PlayerStatType;
-
+use crate::models::{disc::stats::DiscStatType, player::stats::PlayerStatType};
 
 pub type SharedTheme = Rc<Theme>;
 
@@ -16,6 +18,10 @@ pub struct Theme {
     pub precision_highlight: Color,
     pub endurance_highlight: Color,
     pub luck_highlight: Color,
+    pub speed_color: Color,
+    pub glide_color: Color,
+    pub turn_color: Color,
+    pub fade_color: Color,
 }
 
 impl Default for Theme {
@@ -29,6 +35,10 @@ impl Default for Theme {
             precision_highlight: Color::Blue,
             endurance_highlight: Color::Green,
             luck_highlight: Color::Yellow,
+            speed_color: Color::Red,
+            glide_color: Color::Yellow,
+            turn_color: Color::Blue,
+            fade_color: Color::Green,
         }
     }
 }
@@ -56,7 +66,9 @@ impl Theme {
 
     pub fn highlight_block(&self) -> Block {
         // maybe need focus
-        Block::default().borders(Borders::ALL).border_type(BorderType::Double)
+        Block::default()
+            .borders(Borders::ALL)
+            .border_type(BorderType::Double)
     }
 
     pub fn item(&self, selected: bool) -> Style {
@@ -67,8 +79,16 @@ impl Theme {
         }
     }
 
-
     pub fn slider_block(&self, focus: bool) -> Block {
         todo!();
+    }
+
+    pub fn box_color(&self, stat: DiscStatType) -> Color {
+        match stat {
+            DiscStatType::Speed => self.speed_color,
+            DiscStatType::Glide => self.glide_color,
+            DiscStatType::Turn => self.turn_color,
+            DiscStatType::Fade => self.fade_color,
+        }
     }
 }

@@ -49,6 +49,28 @@ impl Default for Disc {
     }
 }
 
+impl Disc {
+    pub fn stat_value(&self, stat_type: DiscStatType) -> f64 {
+        match self.disc_stats.iter().find(|s| s.stat_type() == stat_type) {
+            Some(d) => d.value(),
+            None => 0.0,
+        }
+    }
+
+    pub fn change_stat_value(&mut self, new_value: f64, stat_type: DiscStatType) {
+        match self
+            .disc_stats
+            .iter_mut()
+            .find(|s| s.stat_type() == stat_type)
+        {
+            Some(stat) => {
+                stat.set_value(new_value);
+            }
+            None => {}
+        };
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub enum DiscType {
     Driver,

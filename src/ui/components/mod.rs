@@ -4,4 +4,4 @@ pub mod disc_list;
 pub mod disc_stats;
 pub mod flightpath;
 pub mod player_list;
-pub mod stats_list;
+pub mod player_stats_list;
