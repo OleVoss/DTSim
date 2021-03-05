@@ -80,7 +80,7 @@ impl<'a> Widget for NumberBox<'a> {
 
         let box_style = Style::default().fg(self.color);
 
-        let small_font = FIGfont::from_file("assets/small.flf").unwrap();
+        let small_font = FIGfont::from_file("assets/rectangles.flf").unwrap();
         let figure = small_font.convert(&self.value.to_string());
         let value_para = match figure {
             Some(f) => figure_to_paragraph(f).alignment(Alignment::Center),
@@ -102,7 +102,7 @@ impl<'a> Widget for NumberBox<'a> {
 
 fn figure_to_paragraph(figure: FIGure) -> Paragraph {
     let mut spans: Vec<Spans> = vec![];
-    for i in 0..figure.height {
+    for i in 1..figure.height {
         let mut span_chars: Vec<String> = vec![];
         for character in &figure.characters {
             if let Some(line) = character.characters.get(i as usize) {

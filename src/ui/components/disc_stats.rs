@@ -64,8 +64,13 @@ impl DrawableComponent for DiscStats {
             boxes.push(num_box);
         }
 
-        let box_list =
-            BoxList::new(boxes).block(Block::default().borders(Borders::ALL).title("Stats"));
+        let box_list = BoxList::new(boxes)
+            .block(Block::default().borders(Borders::ALL).title("Stats"))
+            .highlight_block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .border_type(BorderType::Double),
+            );
         let mut state = BoxListState::default();
         state.select(Some(self.selection));
 
