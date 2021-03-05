@@ -36,7 +36,7 @@ impl Default for Theme {
             endurance_highlight: Color::Green,
             luck_highlight: Color::Yellow,
             speed_color: Color::Red,
-            glide_color: Color::Yellow,
+            glide_color: Color::Rgb(0, 191, 255),
             turn_color: Color::Blue,
             fade_color: Color::Green,
         }
