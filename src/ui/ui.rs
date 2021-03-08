@@ -2,9 +2,12 @@ use std::rc::Rc;
 
 use crate::{
     app::App,
+    config::{Config, SharedConfig},
+    keys::{KeyConfig, SharedKeyConfig},
     style::{SharedTheme, Theme},
 };
 use anyhow::{bail, Result};
+use crossterm::event::KeyEvent;
 use tui::{
     backend::Backend,
     layout::{Constraint, Direction, Layout, Margin, Rect},
@@ -14,10 +17,16 @@ use tui::{
     Frame,
 };
 
-use super::{tabs::{DiscTab, Overview, PlayerTab, Simulation}, widgets::DrawableComponent};
+use super::{
+    tabs::{DiscTab, Overview, PlayerTab, Simulation},
+    widgets::DrawableComponent,
+};
 
 pub struct UI {
     theme: SharedTheme,
+    pub key_config: SharedKeyConfig,
+    pub config: SharedConfig,
+    pub tab: usize,
     overview_tab: Overview,
     simulation_tab: Simulation,
     pub player_tab: PlayerTab,
@@ -29,6 +38,9 @@ impl UI {
         let theme = Rc::new(Theme::init());
         Self {
             theme: theme.clone(),
+            key_config: Rc::new(KeyConfig::init()),
+            config: Rc::new(Config::init()),
+            tab: 1,
             overview_tab: Overview::new(),
             simulation_tab: Simulation::new(),
             player_tab: PlayerTab::new(theme.clone()),
@@ -54,7 +66,7 @@ impl UI {
         self.draw_tabs(f, chunks_main[0], app);
 
         // TODO tab selection in UI rather than in APP
-        match app.tab {
+        match self.tab {
             0 => self.overview_tab.draw(f, chunks_main[1], app)?,
             1 => self.simulation_tab.draw(f, chunks_main[1], app)?,
             3 => self.player_tab.draw(f, chunks_main[1], app)?,
@@ -98,8 +110,31 @@ impl UI {
                         .remove_modifier(Modifier::DIM),
                 )
                 .divider("|")
-                .select(app.tab),
+                .select(self.tab),
             r,
         );
+    }
+}
+
+impl UI {
+    pub fn switch_tab(&mut self, k: KeyEvent) -> Result<()> {
+        if k == self.key_config.tab_overview {
+            self.set_tab(0)?;
+        } else if k == self.key_config.tab_simulation {
+            self.set_tab(1)?;
+        } else if k == self.key_config.tab_config {
+            self.set_tab(2)?;
+        } else if k == self.key_config.tab_player {
+            self.set_tab(3)?;
+        } else if k == self.key_config.tab_discs {
+            self.set_tab(4)?;
+        }
+
+        Ok(())
+    }
+
+    pub fn set_tab(&mut self, tab: usize) -> Result<()> {
+        self.tab = tab;
+        Ok(())
     }
 }

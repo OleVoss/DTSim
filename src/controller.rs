@@ -19,20 +19,20 @@ pub fn key_event(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         return Ok(());
     }
 
-    if ev == app.key_config.tab_overview
-        || ev == app.key_config.tab_config
-        || ev == app.key_config.tab_simulation
-        || ev == app.key_config.tab_player
-        || ev == app.key_config.tab_discs
+    if ev == ui.key_config.tab_overview
+        || ev == ui.key_config.tab_config
+        || ev == ui.key_config.tab_simulation
+        || ev == ui.key_config.tab_player
+        || ev == ui.key_config.tab_discs
     {
-        app.switch_tab(ev)?;
+        ui.switch_tab(ev)?;
     }
 
     if ev == app.key_config.select {
         app.load_player();
     }
 
-    match app.tab {
+    match ui.tab {
         0 => (),
         1 => (),
         2 => (),
