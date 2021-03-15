@@ -21,10 +21,12 @@ use crate::{
     models::{
         disc::disc_storage::{Disc, DiscStorage},
         player::{Player, PlayerRoaster, PlayerStatType, Stat},
+        simulation::simulation::Simulation,
     },
 };
 
 pub struct App {
+    pub simulation: Option<Simulation>,
     pub should_quit: bool,
     pub config: SharedConfig,
     pub key_config: SharedKeyConfig,
@@ -35,6 +37,7 @@ pub struct App {
 impl App {
     pub fn new(initialize: bool) -> App {
         let mut app = App {
+            simulation: None,
             should_quit: false,
             config: Rc::new(Config::init()),
             key_config: Rc::new(KeyConfig::init()),

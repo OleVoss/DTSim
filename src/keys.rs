@@ -7,6 +7,8 @@ pub type SharedKeyConfig = Rc<KeyConfig>;
 pub struct KeyConfig {
     pub tab_overview: KeyEvent,
     pub tab_simulation: KeyEvent,
+    pub start_simulation: KeyEvent,
+    pub step_simulation: KeyEvent,
     pub tab_config: KeyEvent,
     pub tab_player: KeyEvent,
     pub player_list: KeyEvent,
@@ -31,6 +33,14 @@ impl Default for KeyConfig {
             },
             tab_simulation: KeyEvent {
                 code: KeyCode::Char('2'),
+                modifiers: KeyModifiers::empty(),
+            },
+            start_simulation: KeyEvent {
+                code: KeyCode::Char('s'),
+                modifiers: KeyModifiers::SHIFT,
+            },
+            step_simulation: KeyEvent {
+                code: KeyCode::Char('s'),
                 modifiers: KeyModifiers::empty(),
             },
             tab_config: KeyEvent {

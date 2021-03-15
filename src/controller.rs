@@ -3,12 +3,13 @@ use std::rc::Rc;
 use anyhow::{private::new_adhoc, Result};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use enum_index::{EnumIndex, IndexEnum};
+use DTSim_courses::models::course::Course;
 
 use crate::{
     app::App,
     config::{self, SharedConfig},
     keys::{KeyConfig, SharedKeyConfig},
-    models::player::stats::PlayerStatType,
+    models::{player::stats::PlayerStatType, simulation::simulation::Simulation},
     ui::tabs::{discs::DiscTabSections, PlayerTabSections},
     UI,
 };
@@ -142,5 +143,22 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
         }
         PlayerTabSections::Bag => {}
     }
+    Ok(())
+}
+
+fn simulation_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
+    if ev == app.key_config.start_simulation {
+        if app.simulation.is_none() {
+            let player = app.player_roaster.get_player(4).unwrap(); // TODO remove unwrap()
+            let course = Course::new(String::from("Test Course"), 3);
+            app.simulation = Some(Simulation::new(course, player));
+        }
+    } else if ev == app.key_config.step_simulation {
+        match &mut app.simulation {
+            Some(s) => s.step()?,
+            None => (),
+        }
+    }
+
     Ok(())
 }

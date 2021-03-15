@@ -25,6 +25,16 @@ impl PlayerRoaster {
     pub fn player_count(&self) -> usize {
         self.player_list.len()
     }
+
+    pub fn get_player(&self, count: usize) -> Option<Vec<Player>> {
+        Some(
+            self.player_list
+                .iter()
+                .take(count)
+                .map(|p| p.clone())
+                .collect(),
+        )
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

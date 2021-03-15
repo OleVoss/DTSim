@@ -1,4 +1,4 @@
 pub mod course;
 pub mod disc;
 pub mod player;
-pub mod tournament;
+pub mod simulation;

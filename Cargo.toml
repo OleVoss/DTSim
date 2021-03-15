@@ -20,3 +20,6 @@ enum_index = "*"
 enum_index_derive = "*"
 itertools = "0.10.0"
 figlet-rs = "0.1.3"
+
+# dtsim libs
+DTSim_courses = { path = "../DTSim_courses" }
