@@ -1,0 +1,8 @@
+Course(
+    name: "Course I",
+    active_hole: 1,
+    length: 4,
+    holes: [
+
+    ],
+)

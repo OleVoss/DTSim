@@ -13,6 +13,11 @@ use tui::{
     widgets::{Block, BorderType, Borders, List, ListItem, Tabs},
     Frame,
 };
+use DTSim_courses::components::{
+    area::{Area, AreaDirection, AreaType},
+    course::Course,
+    hole::Hole,
+};
 
 use crate::{
     config::{self, Config, SharedConfig},
@@ -32,6 +37,7 @@ pub struct App {
     pub key_config: SharedKeyConfig,
     pub player_roaster: PlayerRoaster,
     pub disc_storage: DiscStorage,
+    pub course: Course,
 }
 
 impl App {
@@ -43,11 +49,25 @@ impl App {
             key_config: Rc::new(KeyConfig::init()),
             player_roaster: PlayerRoaster::new(),
             disc_storage: DiscStorage::new(),
+            course: Course::new("Course".to_string(), 1),
         };
         if initialize {
             app.load_player();
             app.load_discs();
         }
+
+        // only for test purposes!!!
+        let mut hole = Hole::new(1, 3, 30, 30);
+        hole.set_areas(vec![Area::new(
+            vec![
+                ("-0.05 * (x - 20) ^ 2 + 16", AreaDirection::Beneath),
+                ("0.05 * (x - 12) ^ 2 + 1", AreaDirection::Above),
+                ("x-10", AreaDirection::Above),
+            ],
+            AreaType::Woods,
+        )]);
+        let holes = vec![hole];
+        app.course.set_holes(holes);
 
         return app;
     }
@@ -57,16 +77,14 @@ impl App {
 impl App {
     // TODO: Error handling
     pub fn load_player(&mut self) {
-        let assets_path = Path::new("./assets");
-        let contents = fs::read_to_string(assets_path.join("player.ron"));
-        let roaster: PlayerRoaster = ron::from_str(&contents.unwrap().to_owned()).unwrap();
+        let contents = include_str!("../assets/player.ron");
+        let roaster: PlayerRoaster = ron::from_str(&contents).unwrap();
         self.player_roaster = roaster;
     }
 
     pub fn load_discs(&mut self) {
-        let asset_path = Path::new("./assets");
-        let contents = fs::read_to_string(asset_path.join("discs.ron"));
-        let storage: DiscStorage = ron::from_str(&contents.unwrap().to_owned()).unwrap();
+        let contents = include_str!("../assets/discs.ron");
+        let storage: DiscStorage = ron::from_str(&contents).unwrap();
         self.disc_storage = storage;
     }
 }

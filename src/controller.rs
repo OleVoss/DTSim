@@ -3,7 +3,7 @@ use std::rc::Rc;
 use anyhow::{private::new_adhoc, Result};
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use enum_index::{EnumIndex, IndexEnum};
-use DTSim_courses::models::course::Course;
+use DTSim_courses::components::course::Course;
 
 use crate::{
     app::App,

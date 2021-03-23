@@ -1,6 +1,6 @@
 use anyhow::Result;
 use std::collections::HashMap;
-use DTSim_courses::models::course::Course;
+use DTSim_courses::components::course::Course;
 
 use crate::models::{disc::disc_storage::Disc, player::Player};
 
