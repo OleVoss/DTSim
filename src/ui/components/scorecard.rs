@@ -11,6 +11,6 @@ impl DrawableComponent for Scorecard {
         rect: tui::layout::Rect,
         app: &crate::app::App,
     ) -> anyhow::Result<()> {
-        todo!()
+
     }
 }

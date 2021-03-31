@@ -1,8 +1,12 @@
 Course(
     name: "Course I",
     active_hole: 1,
-    length: 4,
+    length: 1,
     holes: [
-
+        Hole(
+            number: 1,
+            par: 3,
+            length: 
+        )
     ],
 )
