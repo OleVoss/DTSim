@@ -12,5 +12,6 @@ impl DrawableComponent for Scorecard {
         app: &crate::app::App,
     ) -> anyhow::Result<()> {
 
+        Ok(())
     }
 }

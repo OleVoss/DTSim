@@ -51,23 +51,12 @@ impl App {
             disc_storage: DiscStorage::new(),
             course: Course::new("Course".to_string(), 1),
         };
+        
         if initialize {
             app.load_player();
             app.load_discs();
-        }
-
-        // only for test purposes!!!
-        let mut hole = Hole::new(1, 3, 30, 30);
-        hole.set_areas(vec![Area::new(
-            vec![
-                ("-0.05 * (x - 20) ^ 2 + 16", AreaDirection::Beneath),
-                ("0.05 * (x - 12) ^ 2 + 1", AreaDirection::Above),
-                ("x-10", AreaDirection::Above),
-            ],
-            AreaType::Woods,
-        )]);
-        let holes = vec![hole];
-        app.course.set_holes(holes);
+            app.load_course();
+        };
 
         return app;
     }
@@ -86,5 +75,11 @@ impl App {
         let contents = include_str!("../assets/discs.ron");
         let storage: DiscStorage = ron::from_str(&contents).unwrap();
         self.disc_storage = storage;
+    }
+    
+    pub fn load_course(&mut self) {
+        let contents = include_str!("../assets/course_1.ron");
+        let course: Course = ron::from_str(&contents).unwrap();
+        self.course = course;
     }
 }

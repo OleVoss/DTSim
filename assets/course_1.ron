@@ -6,7 +6,11 @@ Course(
         Hole(
             number: 1,
             par: 3,
-            length: 
-        )
+            tee: Point2(2., 5.),
+            basket: Point2(20., 5.),
+            height: 30,
+            width: 30,
+            areas: [],
+            ),
     ],
 )
