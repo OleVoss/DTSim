@@ -148,16 +148,7 @@ fn player_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
 
 fn simulation_tab(app: &mut App, ev: KeyEvent, ui: &mut UI) -> Result<()> {
     if ev == app.key_config.start_simulation {
-        if app.simulation.is_none() {
-            let player = app.player_roaster.get_player(4).unwrap(); // TODO remove unwrap()
-            let course = Course::new(String::from("Test Course"), 3);
-            app.simulation = Some(Simulation::new(course, player));
-        }
     } else if ev == app.key_config.step_simulation {
-        match &mut app.simulation {
-            Some(s) => s.step()?,
-            None => (),
-        }
     }
 
     Ok(())

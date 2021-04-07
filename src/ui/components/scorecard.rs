@@ -27,12 +27,8 @@ impl DrawableComponent for Scorecard {
         let rows: Vec<Row> = Vec::new();
         for p in &app.player_roaster.player_list {
             let mut row_vec: Vec<Cell> = Vec::new();
-            for i in 1..*app.course.length() {
-                let score = app
-                    .simulation
-                    .as_ref()
-                    .unwrap()
-                    .get_player_round_score(p, i);
+            for i in 1..app.simulation.course_length() {
+                let score = app.simulation.get_player_round_score(p, i);
                 let score_str = String::from(score.strokes.len().to_string());
                 row_vec.push(Cell::from(score_str));
             }

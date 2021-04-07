@@ -31,35 +31,37 @@ use crate::{
 };
 
 pub struct App {
-    pub simulation: Option<Simulation>,
+    pub simulation: Simulation,
     pub should_quit: bool,
     pub config: SharedConfig,
     pub key_config: SharedKeyConfig,
     pub player_roaster: PlayerRoaster,
     pub disc_storage: DiscStorage,
-    pub course: Course,
 }
 
 impl App {
     pub fn new(initialize: bool) -> App {
         let mut app = App {
-            simulation: None,
+            simulation: Simulation::default(),
             should_quit: false,
             config: Rc::new(Config::init()),
             key_config: Rc::new(KeyConfig::init()),
             player_roaster: PlayerRoaster::new(),
             disc_storage: DiscStorage::new(),
-            course: Course::new("Course".to_string(), 1),
         };
 
         if initialize {
             app.load_player();
             app.load_discs();
-            app.load_course();
         };
 
-        let simulation = Simulation::new(app.course, app.player_roaster.player_list);
-        app.simulation = Some(simulation);
+        let course = match App::load_course() {
+            Ok(c) => c,
+            Err(_) => panic!("App failed to load course!"),
+        };
+
+        let simulation = Simulation::new(course, app.player_roaster.player_list.clone());
+        app.simulation = simulation;
 
         return app;
     }
@@ -80,9 +82,9 @@ impl App {
         self.disc_storage = storage;
     }
 
-    pub fn load_course(&mut self) {
+    pub fn load_course() -> Result<Course, ron::Error> {
         let contents = include_str!("../assets/course_1.ron");
-        let course: Course = ron::from_str(&contents).unwrap();
-        self.course = course;
+        let course_result: Result<Course, ron::Error> = ron::from_str(&contents);
+        return course_result;
     }
 }

@@ -67,12 +67,13 @@ impl DrawableComponent for Simulation {
 
         let renderer = PrintRenderer::new(' ', 't', 'B', 'w', 'x', 'o');
 
-        let hole = app.course.hole(1).unwrap();
-        let rendered_string = renderer.render(
-            hole,
-            main_chunks[1].width as i64,
-            main_chunks[1].height as i64,
-        );
+        let hole = app.simulation.get_active_hole();
+        let rendered_string = match hole {
+            Some(h) => {
+                renderer.render(h, main_chunks[1].width as i64, main_chunks[1].height as i64)
+            }
+            None => vec![String::from("nothing to render")],
+        };
         let mut text: Vec<Spans> = Vec::new();
         for s in rendered_string {
             text.push(Spans::from(vec![Span::raw(s.to_owned())]))

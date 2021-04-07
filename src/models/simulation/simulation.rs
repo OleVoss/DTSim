@@ -1,7 +1,7 @@
 use anyhow::Result;
 use nalgebra::Point2;
 use std::collections::HashMap;
-use DTSim_courses::components::{course::Course, hole};
+use DTSim_courses::components::{course::Course, hole::Hole};
 
 use crate::models::{disc::disc_storage::Disc, player::Player};
 
@@ -16,10 +16,13 @@ pub enum ScoreType {
     TrippleBogey,
     IncrediblyBad,
 }
+
+#[derive(Default)]
 pub struct Simulation {
-    player_scores: Vec<Scorecard>,
-    course: Course,
-    hole: i64,
+    pub player_scores: Vec<Scorecard>,
+    pub course: Option<Course>,
+    pub active_hole: i64,
+    pub done: bool,
     // environment config
 }
 
@@ -28,8 +31,9 @@ impl Simulation {
         let cards: Vec<Scorecard> = player.into_iter().map(|p| Scorecard::new(p)).collect();
         Self {
             player_scores: cards,
-            course,
-            hole: 1,
+            course: Some(course),
+            active_hole: 1,
+            done: false,
         }
     }
 
@@ -38,7 +42,6 @@ impl Simulation {
         let card = self.get_player_at_turn();
 
         // get hole
-        let hole_nr = self.course.active_hole;
 
         // calculate throw
 
@@ -63,6 +66,22 @@ impl Simulation {
             return score.clone();
         } else {
             return Score::new();
+        }
+    }
+
+    pub fn course_length(&self) -> i64 {
+        if let Some(c) = &self.course {
+            return *c.length();
+        } else {
+            return 0;
+        }
+    }
+
+    pub fn get_active_hole(&self) -> Option<&Hole> {
+        if let Some(c) = &self.course {
+            return c.holes().get((self.active_hole - 1) as usize); // -1 because auf indexing
+        } else {
+            return None;
         }
     }
 }
