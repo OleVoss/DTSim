@@ -29,6 +29,7 @@ pub struct Config {
     // stat bounds
     player_stat_bounds: Vec<StatBounds>,
     disc_stat_bounds: Vec<DiscStatBounds>,
+    // environment: Environment,
 }
 
 impl Default for Config {

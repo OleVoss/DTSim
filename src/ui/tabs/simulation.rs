@@ -14,7 +14,7 @@ use DTSim_courses::components::{
 use crate::{
     app::App,
     main,
-    models::simulation::simulation::Score,
+    models::simulation::simulation::RoundScore,
     style::SharedTheme,
     ui::{components::scorecard::Scorecard, widgets::DrawableComponent},
 };
