@@ -11,15 +11,25 @@ use DTSim_courses::components::{
     Renderer,
 };
 
-use crate::{app::App, ui::widgets::DrawableComponent};
+use crate::{
+    app::App,
+    main,
+    models::simulation::simulation::Score,
+    style::SharedTheme,
+    ui::{components::scorecard::Scorecard, widgets::DrawableComponent},
+};
 
 pub struct Simulation {
     pub visible: bool,
+    pub scorecard: Scorecard,
 }
 
 impl Simulation {
-    pub fn new() -> Self {
-        Self { visible: false }
+    pub fn new(theme: SharedTheme) -> Self {
+        Self {
+            visible: false,
+            scorecard: Scorecard::new(theme),
+        }
     }
 }
 
@@ -31,14 +41,16 @@ impl DrawableComponent for Simulation {
         app: &App,
     ) -> Result<()> {
         let main_chunks = Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints([Constraint::Percentage(30), Constraint::Percentage(70)].as_ref())
-            .split(rect);
-
-        let right_chunks = Layout::default()
             .direction(Direction::Vertical)
-            .constraints([Constraint::Percentage(10), Constraint::Percentage(90)].as_ref())
-            .split(main_chunks[1]);
+            .constraints(
+                [
+                    Constraint::Percentage(7),
+                    Constraint::Percentage(80),
+                    Constraint::Percentage(13),
+                ]
+                .as_ref(),
+            )
+            .split(rect);
 
         // TODO: call the draw() function of the specific components
         let scorecard_block = Block::default()
@@ -58,8 +70,8 @@ impl DrawableComponent for Simulation {
         let hole = app.course.hole(1).unwrap();
         let rendered_string = renderer.render(
             hole,
-            right_chunks[1].width as i64,
-            right_chunks[1].height as i64,
+            main_chunks[1].width as i64,
+            main_chunks[1].height as i64,
         );
         let mut text: Vec<Spans> = Vec::new();
         for s in rendered_string {
@@ -70,9 +82,8 @@ impl DrawableComponent for Simulation {
             // .alignment(Alignment::Left)
             .style(Style::default().fg(Color::White).bg(Color::Black));
 
-        f.render_widget(scorecard_block, main_chunks[0]);
-
-        f.render_widget(para, right_chunks[1]);
+        f.render_widget(para, main_chunks[1]);
+        self.scorecard.draw(f, main_chunks[2], app)?;
 
         Ok(())
     }

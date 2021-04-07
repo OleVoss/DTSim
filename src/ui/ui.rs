@@ -42,7 +42,7 @@ impl UI {
             config: Rc::new(Config::init()),
             tab: 1,
             overview_tab: Overview::new(),
-            simulation_tab: Simulation::new(),
+            simulation_tab: Simulation::new(theme.clone()),
             player_tab: PlayerTab::new(theme.clone()),
             disc_tab: DiscTab::new(theme),
         }
@@ -57,7 +57,7 @@ impl UI {
                 [
                     Constraint::Length(2),
                     Constraint::Min(2),
-                    Constraint::Length(5),
+                    Constraint::Length(3),
                 ]
                 .as_ref(),
             )

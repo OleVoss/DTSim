@@ -159,6 +159,7 @@ dependencies = [
  "figlet-rs",
  "itertools",
  "log",
+ "nalgebra",
  "ron",
  "serde",
  "simplelog",

@@ -1,11 +1,10 @@
 use std::fmt;
 
+use enum_index_derive::{EnumIndex, IndexEnum};
 use serde::{Deserialize, Serialize};
 use variant_count::VariantCount;
-use enum_index_derive::{IndexEnum, EnumIndex};
 
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Stat {
     stat_type: PlayerStatType,
     value: i64,
@@ -13,10 +12,7 @@ pub struct Stat {
 
 impl Stat {
     pub fn new(stat_type: PlayerStatType, value: i64) -> Self {
-        Self {
-            stat_type,
-            value,
-        }
+        Self { stat_type, value }
     }
     pub fn value(&self) -> i64 {
         self.value
@@ -69,7 +65,9 @@ impl StatBounds {
     }
 }
 
-#[derive(Deserialize, Serialize, Debug, Clone, Copy, PartialEq, Eq, VariantCount, EnumIndex, IndexEnum)]
+#[derive(
+    Deserialize, Serialize, Debug, Clone, Copy, PartialEq, Eq, VariantCount, EnumIndex, IndexEnum,
+)]
 pub enum PlayerStatType {
     Strength,
     Precision,

@@ -6,11 +6,29 @@ Course(
         Hole(
             number: 1,
             par: 3,
-            tee: Point2(2., 5.),
-            basket: Point2(20., 5.),
+            tee: [2., 5.],
+            basket: [20., 5.],
             height: 30,
             width: 30,
-            areas: [],
+            areas: [
+                Area(
+                    area_type: Woods,
+                    borders: [
+                        AreaBorder(
+                            direction: Beneath,
+                            func: "-0.05 * (x - 20) ^ 2 + 16",
+                        ),
+                        AreaBorder(
+                            direction: Above,
+                            func: "0.05 * (x - 12) ^ 2 + 1",
+                        ),
+                        AreaBorder(
+                            direction: Above,
+                            func: "x-10",
+                        ),
+                    ],
+                ),
+            ],
             ),
     ],
 )

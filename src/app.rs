@@ -51,12 +51,15 @@ impl App {
             disc_storage: DiscStorage::new(),
             course: Course::new("Course".to_string(), 1),
         };
-        
+
         if initialize {
             app.load_player();
             app.load_discs();
             app.load_course();
         };
+
+        let simulation = Simulation::new(app.course, app.player_roaster.player_list);
+        app.simulation = Some(simulation);
 
         return app;
     }
@@ -76,7 +79,7 @@ impl App {
         let storage: DiscStorage = ron::from_str(&contents).unwrap();
         self.disc_storage = storage;
     }
-    
+
     pub fn load_course(&mut self) {
         let contents = include_str!("../assets/course_1.ron");
         let course: Course = ron::from_str(&contents).unwrap();
